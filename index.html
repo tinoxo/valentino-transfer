@@ -1,0 +1,3195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Valentino's Transfer Dashboard — Serra HS → Skyline → Fall 2027</title>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#C0392B;--orange:#D35400;--blue:#1A5276;--teal:#0E6655;--purple:#4A235A;
+  --bg:#FAFAF8;--white:#FFFFFF;--light:#E8E5DF;--green:#27AE60;--yellow:#D68910;
+  --text:#333333;--muted:#888888;--ltxt:#AAAAAA;
+  --shadow:0 2px 8px rgba(0,0,0,.08);--shadow-md:0 4px 20px rgba(0,0,0,.13);
+  --r:10px;--rs:6px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;min-height:100vh}
+body.dark{--bg:#1c1c1e;--white:#2c2c2e;--light:#3a3a3c;--text:#e5e5ea;--muted:#8e8e93;--ltxt:#636366}
+.nav{background:var(--white);border-bottom:1px solid var(--light);position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 12px;display:flex;align-items:stretch;overflow-x:auto;scrollbar-width:none}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-brand{font-family:Georgia,serif;font-weight:bold;font-size:16px;color:var(--blue);padding:14px 16px 14px 4px;white-space:nowrap;border-right:1px solid var(--light);margin-right:6px;display:flex;align-items:center;gap:6px}
+.nav-tab{padding:14px 12px;cursor:pointer;font-size:13px;font-weight:500;color:var(--muted);white-space:nowrap;border-bottom:3px solid transparent;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;display:flex;align-items:center;gap:4px}
+.nav-tab:hover{color:var(--text)}
+.nav-tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.content{max-width:1200px;margin:0 auto;padding:24px 16px}
+.card{background:var(--white);border:1px solid var(--light);border-radius:var(--r);box-shadow:var(--shadow);padding:22px 24px;margin-bottom:20px}
+.card-title{font-family:Georgia,serif;font-size:20px;font-weight:bold;color:var(--text);margin-bottom:4px}
+.card-sub{font-size:13px;color:var(--muted);margin-bottom:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:900px){.grid-3,.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}}
+.stat-card{background:var(--white);border:1px solid var(--light);border-radius:var(--r);padding:20px;text-align:center;box-shadow:var(--shadow)}
+.stat-val{font-family:Georgia,serif;font-size:34px;font-weight:bold;margin-bottom:4px;line-height:1}
+.stat-lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+.badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.bd-red{background:#FDEDEC;color:var(--red)}
+.bd-orange{background:#FEF5E7;color:var(--orange)}
+.bd-blue{background:#EBF5FB;color:var(--blue)}
+.bd-teal{background:#E8F8F5;color:var(--teal)}
+.bd-purple{background:#F5EEF8;color:var(--purple)}
+.bd-green{background:#EAFAF1;color:var(--green)}
+.bd-yellow{background:#FEF9E7;color:var(--yellow)}
+.bd-gray{background:#F2F3F4;color:var(--muted)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;border:1px solid transparent;transition:all .2s;text-decoration:none;font-family:inherit}
+.btn-primary{background:var(--blue);color:white}.btn-primary:hover{background:#154360}
+.btn-outline{background:var(--white);color:var(--text);border-color:var(--light)}.btn-outline:hover{background:var(--bg)}
+.btn-green{background:var(--teal);color:white}.btn-green:hover{background:#0A5349}
+.btn-red{background:var(--red);color:white}.btn-red:hover{background:#A93226}
+.btn-sm{padding:5px 11px;font-size:12px}
+.progress-wrap{background:var(--light);border-radius:8px;height:8px;overflow:hidden;margin:6px 0}
+.progress-bar{height:100%;border-radius:8px;transition:width .5s ease}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--bg);padding:9px 12px;text-align:left;font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);border-bottom:1px solid var(--light)}
+td{padding:10px 12px;border-bottom:1px solid var(--light);vertical-align:middle}
+tr:hover td{background:rgba(0,0,0,.015)}
+tr:last-child td{border-bottom:none}
+.checklist-item{border:1px solid var(--light);border-radius:var(--rs);margin-bottom:7px;overflow:hidden;background:var(--white)}
+.checklist-item.done{opacity:.55}
+.cl-row{display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer}
+.cl-row:hover{background:var(--bg)}
+.cl-check{width:18px;height:18px;accent-color:var(--teal);flex-shrink:0;cursor:pointer}
+.cl-detail{padding:10px 14px 14px 42px;background:var(--bg);border-top:1px solid var(--light);font-size:13px;color:var(--muted)}
+.phase-hdr{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-radius:var(--rs);cursor:pointer;margin-bottom:12px;font-family:Georgia,serif;font-weight:bold;font-size:15px;color:white;user-select:none}
+.sem-card{border:2px solid var(--light);border-radius:var(--r);overflow:hidden;margin-bottom:18px}
+.sem-hdr{padding:13px 18px;font-family:Georgia,serif;font-weight:bold;font-size:16px;color:white;display:flex;align-items:center;justify-content:space-between}
+.gpa-banner{background:linear-gradient(135deg,var(--blue),#2E86C1);color:white;border-radius:var(--r);padding:24px;text-align:center;margin-bottom:20px}
+.gpa-num{font-family:Georgia,serif;font-size:52px;font-weight:bold;line-height:1;margin-bottom:6px}
+.gpa-lbl{font-size:13px;opacity:.8;letter-spacing:.5px}
+.form-group{margin-bottom:14px}
+label{display:block;font-size:12px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+input[type=text],input[type=number],input[type=url],select,textarea{width:100%;padding:8px 12px;border:1px solid var(--light);border-radius:var(--rs);font-size:14px;color:var(--text);background:var(--white);transition:border-color .2s;font-family:inherit}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,82,118,.1)}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal{background:var(--white);border-radius:var(--r);padding:24px;max-width:520px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-md)}
+.modal-title{font-family:Georgia,serif;font-size:20px;font-weight:bold;margin-bottom:18px}
+.hero{background:linear-gradient(135deg,var(--blue) 0%,var(--teal) 100%);color:white;border-radius:var(--r);padding:32px;margin-bottom:24px}
+.hero-title{font-family:Georgia,serif;font-size:26px;font-weight:bold;margin-bottom:8px;line-height:1.25}
+.hero-sub{font-size:15px;opacity:.85;margin-bottom:12px}
+.hero-path{font-family:monospace;font-size:13px;opacity:.65;letter-spacing:1px}
+.filter-btn{padding:5px 12px;border:1px solid var(--light);border-radius:20px;font-size:12px;cursor:pointer;background:var(--white);color:var(--muted);transition:all .2s;font-family:inherit}
+.filter-btn.active,.filter-btn:hover{background:var(--blue);color:white;border-color:var(--blue)}
+.igetc-area{border:1px solid var(--light);border-radius:var(--rs);margin-bottom:9px;overflow:hidden}
+.igetc-hdr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;cursor:pointer;background:var(--white);transition:background .2s}
+.igetc-hdr:hover{background:var(--bg)}
+.igetc-body{padding:12px 14px;background:var(--bg);border-top:1px solid var(--light);font-size:13px}
+.htp-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--light)}
+.htp-item:last-child{border-bottom:none}
+.res-link{display:flex;align-items:center;gap:8px;padding:8px 0;color:var(--blue);text-decoration:none;font-size:14px;border-bottom:1px solid var(--light);transition:color .2s}
+.res-link:hover{color:var(--teal)}
+.res-link:last-child{border-bottom:none}
+.proj-card{border:1px solid var(--light);border-radius:var(--r);padding:20px;background:var(--white);transition:box-shadow .2s;margin-bottom:0}
+.proj-card:hover{box-shadow:var(--shadow-md)}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:500;margin:2px;background:var(--light);color:var(--text)}
+.section-title{font-family:Georgia,serif;font-size:22px;font-weight:bold;margin-bottom:4px}
+.section-sub{font-size:13px;color:var(--muted);margin-bottom:20px}
+.divider{height:1px;background:var(--light);margin:20px 0}
+.arrow{transition:transform .2s;flex-shrink:0}
+.arrow.open{transform:rotate(90deg)}
+.flex{display:flex;align-items:center}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+.gap-4{gap:4px}.gap-8{gap:8px}.gap-12{gap:12px}.gap-16{gap:16px}
+.mb-8{margin-bottom:8px}.mb-12{margin-bottom:12px}.mb-16{margin-bottom:16px}.mb-20{margin-bottom:20px}.mb-24{margin-bottom:24px}
+.mt-8{margin-top:8px}.mt-12{margin-top:12px}.mt-16{margin-top:16px}
+.text-muted{color:var(--muted)}.text-sm{font-size:12px}.text-mono{font-family:monospace}
+.about-p{font-size:15px;line-height:1.8;color:var(--text);margin-bottom:12px}
+.grade-sel{padding:4px 8px;border:1px solid var(--light);border-radius:4px;font-size:13px;width:80px;background:var(--white);color:var(--text);font-family:inherit}
+.deadline-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border:1px solid var(--light);border-radius:var(--rs);margin-bottom:8px;background:var(--white)}
+.logo-fallback{display:flex;align-items:center;justify-content:center;font-weight:bold;color:white;border-radius:6px;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+.urgent-pulse{animation:pulse 2s infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+#loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px}
+#loading .spinner{width:40px;height:40px;border:3px solid var(--light);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+#loading p{font-family:Georgia,serif;font-size:17px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div id="root">
+  <div id="loading"><div class="spinner"></div><p>Loading Transfer Dashboard…</p></div>
+</div>
+<script>
+const {
+  useState,
+  useEffect,
+  useCallback,
+  useRef
+} = React;
+
+// ─────────────────────────────────────────────
+// CONSTANTS
+// ─────────────────────────────────────────────
+const GRADE_POINTS = {
+  'A': 4.0,
+  'A-': 3.7,
+  'B+': 3.3,
+  'B': 3.0,
+  'B-': 2.7,
+  'C+': 2.3,
+  'C': 2.0,
+  'D': 1.0,
+  'F': 0.0
+};
+const GRADES_LIST = ['A', 'A-', 'B+', 'B', 'B-', 'C+', 'C', 'D', 'F'];
+const SEMESTERS = [{
+  id: 'summer2026',
+  label: 'Summer 2026',
+  color: '#0E6655',
+  textColor: 'white'
+}, {
+  id: 'fall2026',
+  label: 'Fall 2026',
+  color: '#1A5276',
+  textColor: 'white'
+}, {
+  id: 'winter2627',
+  label: 'Winter 2026/27',
+  color: '#4A235A',
+  textColor: 'white'
+}, {
+  id: 'spring2027',
+  label: 'Spring 2027',
+  color: '#D35400',
+  textColor: 'white'
+}];
+const COURSES = [
+// Summer 2026 — 15 units
+{
+  id: 'calc1',
+  name: 'Calculus I',
+  semester: 'summer2026',
+  units: 5,
+  prereq: 'Precalculus',
+  igetc: '2',
+  articulation: {
+    berkeley: 'MATH 1A',
+    usc: 'MATH 125',
+    uci: 'MATH 2A',
+    ucla: 'MATH 31A',
+    ucsd: 'MATH 20A',
+    ucsb: 'MATH 3A',
+    calpolyslo: 'MATH 141',
+    sjsu: 'MATH 30'
+  }
+}, {
+  id: 'micro',
+  name: 'Microeconomics',
+  semester: 'summer2026',
+  units: 3,
+  prereq: 'None',
+  igetc: '4',
+  articulation: {
+    berkeley: 'ECON 1',
+    usc: 'ECON 203',
+    uci: 'ECON 20A',
+    ucla: 'ECON 1',
+    ucsd: 'ECON 1',
+    ucsb: 'ECON 1',
+    calpolyslo: 'ECON 201',
+    sjsu: 'ECON 1A'
+  }
+}, {
+  id: 'macro',
+  name: 'Macroeconomics',
+  semester: 'summer2026',
+  units: 3,
+  prereq: 'None',
+  igetc: '4',
+  articulation: {
+    berkeley: 'ECON 2',
+    usc: 'ECON 204',
+    uci: 'ECON 20B',
+    ucla: 'ECON 2',
+    ucsd: 'ECON 2',
+    ucsb: 'ECON 2',
+    calpolyslo: 'ECON 202',
+    sjsu: 'ECON 1B'
+  }
+}, {
+  id: 'acct1',
+  name: 'Financial Accounting',
+  semester: 'summer2026',
+  units: 4,
+  prereq: 'None',
+  igetc: null,
+  articulation: {
+    berkeley: 'UGBA 102A',
+    usc: 'ACCT 410',
+    uci: 'MGMT 30A',
+    ucla: 'MGMT 1A',
+    ucsd: 'MGT 4',
+    ucsb: 'ECON 131',
+    calpolyslo: 'ACCT 214',
+    sjsu: 'BUS4 120A'
+  }
+},
+// Fall 2026 — 20 units
+{
+  id: 'calc2',
+  name: 'Calculus II',
+  semester: 'fall2026',
+  units: 5,
+  prereq: 'Calc I',
+  igetc: '2',
+  articulation: {
+    berkeley: 'MATH 1B',
+    usc: 'MATH 126',
+    uci: 'MATH 2B',
+    ucla: 'MATH 31B',
+    ucsd: 'MATH 20B',
+    ucsb: 'MATH 3B',
+    calpolyslo: 'MATH 142',
+    sjsu: 'MATH 31'
+  }
+}, {
+  id: 'eng1a',
+  name: 'English Composition I',
+  semester: 'fall2026',
+  units: 4,
+  prereq: 'None',
+  igetc: '1A',
+  articulation: {
+    berkeley: 'R&C A',
+    usc: 'WRIT 150',
+    uci: 'Writing 39A',
+    ucla: 'English Comp',
+    ucsd: 'Writing 10',
+    ucsb: 'Writing 1',
+    calpolyslo: 'ENGL 134',
+    sjsu: 'ENGL 1A'
+  }
+}, {
+  id: 'cpp',
+  name: 'C++ Programming',
+  semester: 'fall2026',
+  units: 4,
+  prereq: 'Intro to CS preferred',
+  igetc: null,
+  articulation: {
+    berkeley: 'CS 61B (partial)',
+    usc: 'CSCI 103',
+    uci: 'ICS 45C',
+    ucla: 'CS 32',
+    ucsd: 'CSE 11',
+    ucsb: 'CS 24',
+    calpolyslo: 'CPE 102',
+    sjsu: 'CS 46B'
+  }
+}, {
+  id: 'acct2',
+  name: 'Managerial Accounting',
+  semester: 'fall2026',
+  units: 4,
+  prereq: 'Financial Accounting',
+  igetc: null,
+  articulation: {
+    berkeley: 'UGBA 102B',
+    usc: 'ACCT 420',
+    uci: 'MGMT 30B',
+    ucla: 'MGMT 1B',
+    ucsd: 'MGT 5',
+    ucsb: 'ECON 132',
+    calpolyslo: 'ACCT 215',
+    sjsu: 'BUS4 120B'
+  }
+}, {
+  id: 'buslaw',
+  name: 'Business Law',
+  semester: 'fall2026',
+  units: 3,
+  prereq: 'None',
+  igetc: null,
+  articulation: {
+    berkeley: 'UGBA 101B',
+    usc: 'BUAD 304',
+    uci: 'MGMT 30A',
+    ucla: 'No direct equiv',
+    ucsd: 'MGT 45',
+    ucsb: 'Elective credit',
+    calpolyslo: 'BUS 393',
+    sjsu: 'BUS4 20'
+  }
+},
+// Winter 2026/27 — 8 units
+{
+  id: 'eng1b',
+  name: 'English II / Critical Thinking',
+  semester: 'winter2627',
+  units: 4,
+  prereq: 'English Comp I',
+  igetc: '1B',
+  articulation: {
+    berkeley: 'R&C B',
+    usc: 'WRIT 340',
+    uci: 'Writing 39B',
+    ucla: 'English 3',
+    ucsd: 'Writing 2',
+    ucsb: 'Writing 2',
+    calpolyslo: 'ENGL 145',
+    sjsu: 'ENGL 1B'
+  }
+}, {
+  id: 'film100',
+  name: 'Film Appreciation (De Anza)',
+  semester: 'winter2627',
+  units: 4,
+  prereq: 'None',
+  igetc: '3A',
+  articulation: {
+    berkeley: 'Film/Media 11',
+    usc: 'MUS-THTR-FILM elec.',
+    uci: 'FILM & MEDIA 85A',
+    ucla: 'FILM TV 4',
+    ucsd: 'TDGE 11',
+    ucsb: 'FILM 1',
+    calpolyslo: 'JOUR 203',
+    sjsu: 'TVF 20'
+  }
+},
+// Spring 2027 — 22 units
+{
+  id: 'linalg',
+  name: 'Linear Algebra',
+  semester: 'spring2027',
+  units: 5,
+  prereq: 'Calc II',
+  igetc: '2',
+  articulation: {
+    berkeley: 'MATH 54',
+    usc: 'MATH 225',
+    uci: 'MATH 3A',
+    ucla: 'MATH 33A',
+    ucsd: 'MATH 18',
+    ucsb: 'MATH 4A',
+    calpolyslo: 'MATH 244',
+    sjsu: 'MATH 129A'
+  }
+}, {
+  id: 'ds',
+  name: 'Data Structures (C++)',
+  semester: 'spring2027',
+  units: 4,
+  prereq: 'C++ Programming',
+  igetc: null,
+  articulation: {
+    berkeley: 'CS 61B',
+    usc: 'CSCI 104',
+    uci: 'ICS 46',
+    ucla: 'CS 32',
+    ucsd: 'CSE 12',
+    ucsb: 'CS 24',
+    calpolyslo: 'CPE 202',
+    sjsu: 'CS 46B'
+  }
+}, {
+  id: 'speech',
+  name: 'Oral Communication',
+  semester: 'spring2027',
+  units: 3,
+  prereq: 'None',
+  igetc: '1C',
+  articulation: {
+    berkeley: 'Breadth req.',
+    usc: 'COMM 204',
+    uci: 'HUMAN 1CC',
+    ucla: 'COMM 10',
+    ucsd: 'COMM 10',
+    ucsb: 'COMM 1',
+    calpolyslo: 'COMM 218',
+    sjsu: 'COMM 20'
+  }
+}, {
+  id: 'bio101',
+  name: 'Biology 101',
+  semester: 'spring2027',
+  units: 4,
+  prereq: 'None',
+  igetc: '5B',
+  articulation: {
+    berkeley: 'BIO 1A',
+    usc: 'BISC 105',
+    uci: 'BIO SCI 93',
+    ucla: 'LS 7A',
+    ucsd: 'BILD 1',
+    ucsb: 'BIOL 2',
+    calpolyslo: 'BIO 161',
+    sjsu: 'BIOL 30'
+  }
+}, {
+  id: 'ethics',
+  name: 'Ethics (Philosophy)',
+  semester: 'spring2027',
+  units: 3,
+  prereq: 'None',
+  igetc: '3B',
+  articulation: {
+    berkeley: 'PHIL 3',
+    usc: 'PHIL 366',
+    uci: 'PHIL 65',
+    ucla: 'PHIL 9',
+    ucsd: 'PHIL 27',
+    ucsb: 'PHIL 4',
+    calpolyslo: 'PHIL 231',
+    sjsu: 'PHIL 186'
+  }
+}, {
+  id: 'music',
+  name: 'Music Appreciation',
+  semester: 'spring2027',
+  units: 3,
+  prereq: 'None',
+  igetc: '3A',
+  articulation: {
+    berkeley: 'MUSIC 27',
+    usc: 'MUS 202',
+    uci: 'MUSIC 20A',
+    ucla: 'MUSC 12',
+    ucsd: 'MUS 10',
+    ucsb: 'MUS 17',
+    calpolyslo: 'MU 201',
+    sjsu: 'MUSC 10A'
+  }
+}];
+const AP_EXAMS = [{
+  id: 'apstats',
+  name: 'AP Statistics',
+  score: 5,
+  units: 4,
+  gradeEq: 'A',
+  equiv: {
+    berkeley: 'STAT 20',
+    usc: 'BUAD 310',
+    uci: 'STATS 7',
+    ucla: 'STATS 10',
+    ucsd: 'MATH 11',
+    ucsb: 'PSTAT 5A',
+    calpolyslo: 'STAT 252',
+    sjsu: 'STAT 95'
+  },
+  note: 'Fulfills quantitative reasoning requirement at most schools'
+}, {
+  id: 'apchem',
+  name: 'AP Chemistry',
+  score: 5,
+  units: 4,
+  gradeEq: 'A',
+  equiv: {
+    berkeley: 'CHEM 1A',
+    usc: 'CHEM 105A',
+    uci: 'CHEM 1A',
+    ucla: 'CHEM 14A',
+    ucsd: 'CHEM 4A',
+    ucsb: 'CHEM 1A',
+    calpolyslo: 'CHEM 124',
+    sjsu: 'CHEM 1A'
+  },
+  note: 'IGETC Area 5A (Physical Sciences)'
+}, {
+  id: 'apush',
+  name: 'AP US History',
+  score: 5,
+  units: 4,
+  gradeEq: 'A',
+  equiv: {
+    berkeley: 'HIST 7A/B',
+    usc: 'HIST 200',
+    uci: 'HIST 40A',
+    ucla: 'HIST 13A',
+    ucsd: 'HIST 87',
+    ucsb: 'HIST 17A',
+    calpolyslo: 'HIST 303',
+    sjsu: 'HIST 15'
+  },
+  note: 'IGETC Area 3B & 4 (Humanities / Social Sciences)'
+}, {
+  id: 'apgov',
+  name: 'AP US Government',
+  score: 5,
+  units: 4,
+  gradeEq: 'A',
+  equiv: {
+    berkeley: 'POLSCI 1',
+    usc: 'POSC 100',
+    uci: 'POLI SCI 21A',
+    ucla: 'POL SCI 40',
+    ucsd: 'POLI SCI 10',
+    ucsb: 'POLI SCI 1',
+    calpolyslo: 'POLS 110',
+    sjsu: 'POLS 1'
+  },
+  note: 'IGETC Area 4 (Social Sciences)'
+}, {
+  id: 'aphys',
+  name: 'AP Physics 1',
+  score: 3,
+  units: 4,
+  gradeEq: 'B+',
+  equiv: {
+    berkeley: 'PHYS 7A',
+    usc: 'PHYS 151',
+    uci: 'PHYS 7A',
+    ucla: 'PHYS 1A',
+    ucsd: 'PHYS 10',
+    ucsb: 'PHYS 1',
+    calpolyslo: 'PHYS 141',
+    sjsu: 'PHYS 1A'
+  },
+  note: 'IGETC Area 5A (Physical Sciences)'
+}];
+const TOTAL_AP_UNITS = AP_EXAMS.reduce((s, a) => s + a.units, 0); // 20
+
+const SCHOOLS = [{
+  id: 'berkeley',
+  name: 'UC Berkeley',
+  abbr: 'UCB',
+  color: '#003262',
+  program: 'Business Administration (Haas)',
+  minor: 'Data Science or CS',
+  targetGPA: 3.9,
+  deadline: '2026-11-30',
+  deadlineLabel: 'Nov 30, 2026',
+  tag: false,
+  tagType: null,
+  status: 'reach',
+  website: 'https://haas.berkeley.edu',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Seal_of_University_of_California%2C_Berkeley.svg/120px-Seal_of_University_of_California%2C_Berkeley.svg.png',
+  notes: 'No TAG for Haas. Extremely competitive. Apply via UC application (Nov 1–30). Strong personal statement and extracurriculars required.',
+  requirements: ['Calc I & II (A/A-)', 'Micro & Macro (A)', 'Financial Accounting', 'English Comp (A)', 'IGETC recommended']
+}, {
+  id: 'usc',
+  name: 'USC',
+  abbr: 'USC',
+  color: '#990000',
+  program: 'Business Administration (Marshall)',
+  minor: 'CS (via Viterbi)',
+  targetGPA: 3.8,
+  deadline: '2027-02-01',
+  deadlineLabel: 'Feb 1, 2027',
+  tag: false,
+  tagType: null,
+  status: 'reach',
+  website: 'https://marshall.usc.edu',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/University_of_Southern_California_logo.svg/120px-University_of_Southern_California_logo.svg.png',
+  notes: 'Private school. Apply directly to Marshall. 2 supplemental essays required. Strong portfolio + demonstrated interest helps.',
+  requirements: ['GPA 3.7+', 'Essays: Why USC + Community', 'Business prereqs complete', 'Demonstrated interest']
+}, {
+  id: 'uci',
+  name: 'UC Irvine',
+  abbr: 'UCI',
+  color: '#0064A4',
+  program: 'Business Information Management (BIM)',
+  minor: null,
+  targetGPA: 3.7,
+  deadline: '2026-11-30',
+  deadlineLabel: 'Nov 30, 2026',
+  tag: true,
+  tagType: 'TAG',
+  status: 'target',
+  website: 'https://business.uci.edu',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/The_University_of_California_Irvine.svg/120px-The_University_of_California_Irvine.svg.png',
+  notes: 'TAG available through Skyline. Submit TAG Sept 1–30, 2026. 3.5+ GPA required. Admission guaranteed if all requirements met.',
+  requirements: ['TAG: 3.5 GPA min', 'Calc I & II', 'Micro & Macro', 'English Comp', '30 UC-transferable units by spring']
+}, {
+  id: 'ucla',
+  name: 'UCLA',
+  abbr: 'UCLA',
+  color: '#2774AE',
+  program: 'Business Economics',
+  minor: 'Digital Humanities or Statistics',
+  targetGPA: 3.9,
+  deadline: '2026-11-30',
+  deadlineLabel: 'Nov 30, 2026',
+  tag: false,
+  tagType: null,
+  status: 'reach',
+  website: 'https://economics.ucla.edu',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/University_of_California%2C_Los_Angeles_logo.svg/120px-University_of_California%2C_Los_Angeles_logo.svg.png',
+  notes: 'No TAG. No standalone business undergrad — apply to Economics. Very competitive. TAP/HTP designation is a meaningful plus.',
+  requirements: ['Calc I & II & Linear Algebra', 'Micro & Macro (A)', 'IGETC completed', 'Strong PIQs']
+}, {
+  id: 'ucsd',
+  name: 'UC San Diego',
+  abbr: 'UCSD',
+  color: '#006A96',
+  program: 'Business Economics (EN30)',
+  minor: 'Computer Science or Cognitive Science',
+  targetGPA: 3.7,
+  deadline: '2026-11-30',
+  deadlineLabel: 'Nov 30, 2026',
+  tag: false,
+  tagType: null,
+  status: 'target',
+  website: 'https://rady.ucsd.edu',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/University_of_California%2C_San_Diego_logo.svg/120px-University_of_California%2C_San_Diego_logo.svg.png',
+  notes: 'No TAG. Business Economics is competitive. Strong STEM+business combo (C++/Data Structures) is a differentiator. TAP helps.',
+  requirements: ['Calc I & II', 'Micro & Macro', 'English Comp', '3.5+ GPA', 'CS/quant coursework a plus']
+}, {
+  id: 'ucsb',
+  name: 'UC Santa Barbara',
+  abbr: 'UCSB',
+  color: '#003660',
+  program: 'Business Economics Management',
+  minor: 'Technology Management',
+  targetGPA: 3.5,
+  deadline: '2026-09-30',
+  deadlineLabel: 'TAG: Sept 30, 2026',
+  tag: true,
+  tagType: 'TAG',
+  status: 'target',
+  website: 'https://econ.ucsb.edu',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/UC_Santa_Barbara_logo.svg/120px-UC_Santa_Barbara_logo.svg.png',
+  notes: 'TAG available. Submit Sept 1–30, 2026. 3.4+ GPA for TAG. Regular UC app deadline also Nov 30.',
+  requirements: ['TAG: 3.4 GPA min', 'Calc I', 'Micro & Macro', 'English Comp', '15 UC-transferable units by submission']
+}, {
+  id: 'calpolyslo',
+  name: 'Cal Poly SLO',
+  abbr: 'CPY',
+  color: '#154734',
+  program: 'Business Administration',
+  minor: 'Computer Science',
+  targetGPA: 3.5,
+  deadline: '2026-11-30',
+  deadlineLabel: 'Nov 30, 2026',
+  tag: false,
+  tagType: null,
+  status: 'target',
+  website: 'https://orfalea.calpoly.edu',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Cal_Poly_San_Luis_Obispo_wordmark.svg/120px-Cal_Poly_San_Luis_Obispo_wordmark.svg.png',
+  notes: 'Impacted CSU program. "Learn by Doing" culture — portfolio + C++/Data Structures coursework is a strong differentiator.',
+  requirements: ['Calc I', 'Micro & Macro', 'English Comp', '3.4+ GPA', 'Business prereqs', 'Portfolio helps']
+}, {
+  id: 'sjsu',
+  name: 'SJSU',
+  abbr: 'SJSU',
+  color: '#0055A2',
+  program: 'Business Administration',
+  minor: 'Computer Science',
+  targetGPA: 3.2,
+  deadline: '2026-11-30',
+  deadlineLabel: 'Nov 30, 2026',
+  tag: false,
+  tagType: null,
+  status: 'safety',
+  website: 'https://www.sjsu.edu/lucas',
+  logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/San_Jose_State_University_logo.svg/120px-San_Jose_State_University_logo.svg.png',
+  notes: 'CSU application. Lucas College of Business. Local Silicon Valley connections. Strong safety with excellent tech industry outcomes.',
+  requirements: ['Calc I', 'Micro', 'English Comp', '3.0+ GPA', 'General CSU GE requirements']
+}];
+const IGETC_AREAS = [{
+  id: '1A',
+  area: 'Area 1A',
+  name: 'English Composition',
+  units: 3,
+  courses: ['English Composition I (Fall 2026 — ENGL 100)'],
+  status: 'planned',
+  color: 'var(--blue)'
+}, {
+  id: '1B',
+  area: 'Area 1B',
+  name: 'Critical Thinking & Writing',
+  units: 3,
+  courses: ['English II / Critical Thinking (Winter 2026/27)'],
+  status: 'planned',
+  color: 'var(--blue)'
+}, {
+  id: '1C',
+  area: 'Area 1C',
+  name: 'Oral Communication (CSU only — not UC)',
+  units: 3,
+  courses: ['Oral Communication (Spring 2027) — required for CSU, not UC'],
+  status: 'planned',
+  color: 'var(--teal)'
+}, {
+  id: '2',
+  area: 'Area 2',
+  name: 'Mathematical Concepts & Quantitative Reasoning',
+  units: 3,
+  courses: ['Calculus I (Summer 2026)', 'Calculus II (Fall 2026)', 'Linear Algebra (Spring 2027)'],
+  status: 'planned',
+  color: 'var(--teal)'
+}, {
+  id: '3A',
+  area: 'Area 3A',
+  name: 'Arts & Humanities — Arts',
+  units: 3,
+  courses: ['Film Appreciation — De Anza (Winter 2026/27)', 'Music Appreciation (Spring 2027)'],
+  status: 'planned',
+  color: 'var(--teal)'
+}, {
+  id: '3B',
+  area: 'Area 3B',
+  name: 'Arts & Humanities — Humanities',
+  units: 3,
+  courses: ['Ethics / Philosophy (Spring 2027)', 'AP US History (AP credit — also satisfies 3B)'],
+  status: 'planned',
+  color: 'var(--teal)'
+}, {
+  id: '4',
+  area: 'Area 4',
+  name: 'Social & Behavioral Sciences',
+  units: 9,
+  courses: ['Microeconomics (Summer 2026)', 'Macroeconomics (Summer 2026)', 'AP US Gov (AP credit)', 'AP US History (AP credit)'],
+  status: 'planned',
+  color: 'var(--teal)'
+}, {
+  id: '5A',
+  area: 'Area 5A',
+  name: 'Physical Sciences (with lab)',
+  units: 3,
+  courses: ['AP Chemistry (score: check w/ counselor for lab requirement)', 'AP Physics 1 (AP credit)'],
+  status: 'completed',
+  color: 'var(--green)'
+}, {
+  id: '5B',
+  area: 'Area 5B',
+  name: 'Biological Sciences',
+  units: 3,
+  courses: ['Biology 101 (Spring 2027)'],
+  status: 'planned',
+  color: 'var(--teal)'
+}, {
+  id: '6',
+  area: 'Area 6',
+  name: 'Foreign Languages',
+  units: 0,
+  courses: ['Typically waived for UC/CSU transfer — confirm with counselor at Skyline'],
+  status: 'verify',
+  color: 'var(--yellow)'
+}];
+const CHECKLIST_PHASES = [{
+  id: 'now',
+  label: 'Phase 1 — Right Now',
+  color: '#C0392B',
+  emoji: '🚨'
+}, {
+  id: 'summer',
+  label: 'Phase 2 — Summer 2026',
+  color: '#D35400',
+  emoji: '☀️'
+}, {
+  id: 'fall',
+  label: 'Phase 3 — Fall 2026',
+  color: '#1A5276',
+  emoji: '🍂'
+}, {
+  id: 'winter',
+  label: 'Phase 4 — Winter 2026/27',
+  color: '#0E6655',
+  emoji: '❄️'
+}, {
+  id: 'spring',
+  label: 'Phase 5 — Spring 2027',
+  color: '#4A235A',
+  emoji: '🌸'
+}];
+const CHECKLIST_ITEMS = [
+// Phase 1 — Now
+{
+  id: 'htp-enroll',
+  phase: 'now',
+  urgent: true,
+  task: 'Enroll in HTP (Honors Transfer Program) at Skyline',
+  deadline: 'June 2026',
+  detail: 'Contact the HTP coordinator at Skyline College. Enroll in IDST 105 for Fall 2026. HTP gives you TAP certification for UC priority admission.',
+  link: 'https://www.skylinecollege.edu/htp/'
+}, {
+  id: 'counselor',
+  phase: 'now',
+  urgent: true,
+  task: 'Schedule official Transfer Counseling appointment',
+  deadline: 'June 2026',
+  detail: 'Book a 1-hour transfer counseling session at Skyline. Bring your AP score reports and high school transcript. Ask for a Student Education Plan (SEP).',
+  link: 'https://www.skylinecollege.edu/counseling/'
+}, {
+  id: 'summer-reg',
+  phase: 'now',
+  urgent: true,
+  task: 'Register for Summer 2026 courses (Calc I + Micro)',
+  deadline: 'May 2026',
+  detail: 'Register as soon as priority registration opens. Calc I is high-demand. Consider waitlisting if needed.',
+  link: ''
+}, {
+  id: 'ap-scores',
+  phase: 'now',
+  urgent: false,
+  task: 'Request official AP score reports sent to Skyline',
+  deadline: 'June 2026',
+  detail: 'Log in to College Board and send official AP scores to Skyline College to get credit awarded on your transcript. Cost: ~$15/school.',
+  link: 'https://apcentral.collegeboard.org/'
+}, {
+  id: 'assist',
+  phase: 'now',
+  urgent: false,
+  task: 'Research course articulations on ASSIST.org',
+  deadline: 'Ongoing',
+  detail: 'For each planned course, verify articulation with all 8 target schools on ASSIST.org. Screenshot/save the articulation agreements.',
+  link: 'https://assist.org'
+}, {
+  id: 'uc-account',
+  phase: 'now',
+  urgent: false,
+  task: 'Create UC Application account at apply.universityofcalifornia.edu',
+  deadline: 'August 2026',
+  detail: 'Account opens August 1. Set up early, enter basic info, and prepare essays before the November window.',
+  link: 'https://apply.universityofcalifornia.edu'
+},
+// Phase 2 — Summer 2026
+{
+  id: 'calc1-A',
+  phase: 'summer',
+  urgent: true,
+  task: 'Complete Calculus I with A/A-',
+  deadline: 'August 2026',
+  detail: 'Target A. Attend every class, do all problem sets, form study groups. Calc I is foundational for the full STEM prereq chain.',
+  link: ''
+}, {
+  id: 'micro-A',
+  phase: 'summer',
+  urgent: true,
+  task: 'Complete Microeconomics with A',
+  deadline: 'August 2026',
+  detail: 'Read textbook chapters before lecture. Economics prereq for most business programs. An A here demonstrates academic readiness.',
+  link: ''
+}, {
+  id: 'tag-research',
+  phase: 'summer',
+  urgent: false,
+  task: 'Research TAG eligibility for UCSB and UCI',
+  deadline: 'August 2026',
+  detail: 'TAG (Transfer Admission Guarantee) is available at UCI and UCSB. Review specific unit and GPA requirements. TAG window opens Sept 1.',
+  link: 'https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/transfer-admission-guarantee-tag.html'
+}, {
+  id: 'ps-draft1',
+  phase: 'summer',
+  urgent: false,
+  task: 'Draft Personal Insight Questions (UC PIQs) — first pass',
+  deadline: 'September 2026',
+  detail: 'There are 8 prompts; you choose 4. Common strong choices: #1 (leadership), #5 (challenge), #6 (subject interest), #8 (community). Start early and get feedback.',
+  link: 'https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-transfer/personal-insight-questions.html'
+}, {
+  id: 'lor-request',
+  phase: 'summer',
+  urgent: false,
+  task: 'Identify and approach professors for letters of recommendation',
+  deadline: 'September 2026',
+  detail: 'Ask 2–3 professors who know you well. Give them your resume, personal statement draft, and a list of schools. Ask early — professors get busy in fall.',
+  link: ''
+},
+// Phase 3 — Fall 2026
+{
+  id: 'tag-submit',
+  phase: 'fall',
+  urgent: true,
+  task: 'Submit TAG application (UCI / UCSB) — Sept 1–30 window',
+  deadline: 'September 30, 2026',
+  detail: 'TAG window is Sept 1–30. Submit ONLY if you meet GPA minimums. Review course completions carefully before submitting.',
+  link: 'https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/transfer-admission-guarantee-tag.html'
+}, {
+  id: 'idst105',
+  phase: 'fall',
+  urgent: true,
+  task: 'Complete IDST 105 (HTP Orientation)',
+  deadline: 'December 2026',
+  detail: 'Required for HTP enrollment. Covers transfer process, study skills, and community engagement. Pass with B or higher.',
+  link: ''
+}, {
+  id: 'uc-app-open',
+  phase: 'fall',
+  urgent: true,
+  task: 'UC Application opens Aug 1 — complete all sections',
+  deadline: 'November 30, 2026',
+  detail: 'Fill in all coursework, test scores, honors, activities, and awards. Complete all 4 PIQs (350 words each). Review 3x before submitting.',
+  link: 'https://apply.universityofcalifornia.edu'
+}, {
+  id: 'csu-app',
+  phase: 'fall',
+  urgent: true,
+  task: 'Submit CSU application (Cal Poly SLO, SJSU)',
+  deadline: 'November 30, 2026',
+  detail: 'CSU application opens Oct 1, due Nov 30. Apply to Cal Poly SLO and SJSU. Include all coursework and AP scores.',
+  link: 'https://www2.calstate.edu/apply'
+}, {
+  id: 'igetc-cert',
+  phase: 'fall',
+  urgent: false,
+  task: 'Request IGETC certification plan from counselor',
+  deadline: 'October 2026',
+  detail: 'Meet with counselor to review IGETC progress. Identify missing areas (likely 3A and 5B). Plan courses to complete IGETC before transfer.',
+  link: ''
+}, {
+  id: 'uc-submit',
+  phase: 'fall',
+  urgent: true,
+  task: 'Submit UC Application — Nov 1–30 window',
+  deadline: 'November 30, 2026',
+  detail: 'HARD DEADLINE. No late submissions. Submit all UC applications during this window. Apply to: Berkeley, UCI, UCLA, UCSD, UCSB.',
+  link: 'https://apply.universityofcalifornia.edu'
+}, {
+  id: 'usc-app',
+  phase: 'fall',
+  urgent: false,
+  task: 'Begin USC Marshall application (due Feb 1)',
+  deadline: 'February 1, 2027',
+  detail: 'USC has its own application portal. Two essays required. Research Marshall program thoroughly for "Why USC" essay.',
+  link: 'https://marshall.usc.edu/programs/undergraduate/transfer/'
+},
+// Phase 4 — Winter 2026/27
+{
+  id: 'fafsa',
+  phase: 'winter',
+  urgent: true,
+  task: 'Submit FAFSA (opens Dec 1, priority Jan 1)',
+  deadline: 'January 1, 2027',
+  detail: 'FAFSA opens Dec 1. Submit ASAP after Jan 1 for maximum financial aid consideration. Use Federal Student Aid website.',
+  link: 'https://studentaid.gov/h/apply-for-aid/fafsa'
+}, {
+  id: 'usc-submit',
+  phase: 'winter',
+  urgent: true,
+  task: 'Submit USC Marshall application',
+  deadline: 'February 1, 2027',
+  detail: 'Final deadline Feb 1. Polish your essays. Get at least 2 peer reviews. Proofread everything one final time.',
+  link: 'https://marshall.usc.edu'
+}, {
+  id: 'honors-contracts',
+  phase: 'winter',
+  urgent: false,
+  task: 'Complete at least 2 of 4 required Honors Contracts',
+  deadline: 'December 2026',
+  detail: 'HTP requires 4 honors contracts. Talk to professors about adding an honors contract to any course. Each requires additional work/project.',
+  link: ''
+}, {
+  id: 'service-hours',
+  phase: 'winter',
+  urgent: false,
+  task: 'Log 8+ community service hours (16 total needed for HTP)',
+  deadline: 'May 2027',
+  detail: 'HTP requires 16 hours of community service. Document each event. Options: tutoring, food bank, campus events, community organizations.',
+  link: ''
+}, {
+  id: 'maintain-gpa',
+  phase: 'winter',
+  urgent: false,
+  task: 'Maintain 3.5+ cumulative GPA through winter courses',
+  deadline: 'January 2027',
+  detail: 'GPA calculation includes all CC coursework. Stats and Business Law must be strong. Stay consistent — admissions see mid-year transcripts.',
+  link: ''
+},
+// Phase 5 — Spring 2027
+{
+  id: 'decisions',
+  phase: 'spring',
+  urgent: false,
+  task: 'Await admissions decisions (UC: March, CSU: March–April)',
+  deadline: 'March–April 2027',
+  detail: 'UC decisions typically release late March. CSU decisions February–April. USC private school typically March–April. Check portals regularly.',
+  link: ''
+}, {
+  id: 'fin-aid',
+  phase: 'spring',
+  urgent: true,
+  task: 'Compare financial aid award letters from all admitted schools',
+  deadline: 'April 2027',
+  detail: 'Compare total cost of attendance, grants vs loans, work-study. Use net price calculators. Contact financial aid offices with questions.',
+  link: ''
+}, {
+  id: 'tap-cert',
+  phase: 'spring',
+  urgent: false,
+  task: 'Obtain TAP/HTP certification from Skyline',
+  deadline: 'April 2027',
+  detail: 'Request TAP certification letter from HTP coordinator once all requirements are met. Submit to UC schools as part of final confirmation.',
+  link: ''
+}, {
+  id: 'sir',
+  phase: 'spring',
+  urgent: true,
+  task: 'Submit SIR (Statement of Intent to Register) by May 1',
+  deadline: 'May 1, 2027',
+  detail: 'HARD DEADLINE. You must submit SIR to one school by May 1. Also decline all other offers promptly as a courtesy to waitlisted students.',
+  link: ''
+}, {
+  id: 'transcript',
+  phase: 'spring',
+  urgent: false,
+  task: 'Request final official transcript sent to chosen university',
+  deadline: 'July 2027',
+  detail: 'After spring grades are posted, request official transcript from Skyline to be sent directly to your university. Final GPA must meet admission conditions.',
+  link: ''
+}, {
+  id: 'housing',
+  phase: 'spring',
+  urgent: true,
+  task: 'Apply for on-campus housing at chosen university',
+  deadline: 'May 2027',
+  detail: 'Apply immediately after submitting SIR. Housing opens fill quickly. Look for transfer-specific housing options.',
+  link: ''
+}];
+const PROJECTS_DEFAULT = [{
+  id: 'game1',
+  name: '2D Platformer Game (Pygame)',
+  status: 'in-progress',
+  tech: ['Python', 'Pygame', 'Game Dev', 'OOP'],
+  github: 'https://github.com/tinoxo',
+  description: 'A 2D platformer game built from scratch in Python/Pygame. Features tile-based map loading, collision detection, sprite animation, and a custom level editor. Demonstrates object-oriented design and real-time rendering concepts.',
+  startDate: '2025-09',
+  endDate: '',
+  demo: ''
+}, {
+  id: 'dash1',
+  name: 'Personal Finance Tracker',
+  status: 'completed',
+  tech: ['JavaScript', 'React', 'localStorage', 'CSS'],
+  github: 'https://github.com/tinoxo',
+  description: 'Single-page app for tracking income, expenses, and budgets. Features category tagging, monthly charts using Canvas API, and full offline support via localStorage. Demonstrates React state management and data visualization.',
+  startDate: '2025-06',
+  endDate: '2025-11',
+  demo: ''
+}, {
+  id: 'algo1',
+  name: 'Algorithm Visualizer',
+  status: 'planned',
+  tech: ['React', 'Algorithms', 'Visualization'],
+  github: 'https://github.com/tinoxo',
+  description: 'Interactive visualizer for sorting and pathfinding algorithms (Bubble Sort, Merge Sort, Dijkstra, A*). Planned as a portfolio piece to demonstrate CS fundamentals ahead of transfer applications.',
+  startDate: '2026-01',
+  endDate: '',
+  demo: ''
+}];
+
+// ─────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────
+function calcGPA(courses, grades) {
+  let pts = 0,
+    units = 0;
+  courses.forEach(c => {
+    const g = grades[c.id];
+    if (g && GRADE_POINTS[g] !== undefined) {
+      pts += GRADE_POINTS[g] * c.units;
+      units += c.units;
+    }
+  });
+  return units > 0 ? pts / units : null;
+}
+function daysUntil(dateStr) {
+  const d = new Date(dateStr);
+  const now = new Date();
+  now.setHours(0, 0, 0, 0);
+  d.setHours(0, 0, 0, 0);
+  return Math.ceil((d - now) / 86400000);
+}
+function fmtDate(dateStr) {
+  if (!dateStr) return '';
+  const d = new Date(dateStr + 'T12:00:00');
+  return d.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric'
+  });
+}
+function gpaColor(gpa) {
+  if (!gpa) return 'var(--muted)';
+  if (gpa >= 3.8) return 'var(--green)';
+  if (gpa >= 3.5) return 'var(--teal)';
+  if (gpa >= 3.0) return 'var(--orange)';
+  return 'var(--red)';
+}
+
+// ─────────────────────────────────────────────
+// SMALL SHARED COMPONENTS
+// ─────────────────────────────────────────────
+function ProgressBar({
+  pct,
+  color = 'var(--teal)',
+  height = 8
+}) {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "progress-wrap",
+    style: {
+      height
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "progress-bar",
+    style: {
+      width: Math.min(100, pct) + '%',
+      background: color
+    }
+  }));
+}
+function SchoolLogo({
+  school,
+  size = 60
+}) {
+  const [err, setErr] = useState(false);
+  if (err || !school.logo) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "logo-fallback",
+      style: {
+        width: size,
+        height: size,
+        background: school.color,
+        fontSize: size * 0.28,
+        borderRadius: 6
+      }
+    }, school.abbr);
+  }
+  return /*#__PURE__*/React.createElement("img", {
+    src: school.logo,
+    alt: school.name,
+    width: size,
+    height: size,
+    style: {
+      objectFit: 'contain',
+      borderRadius: 4,
+      flexShrink: 0,
+      background: 'white',
+      padding: 2,
+      border: '1px solid var(--light)'
+    },
+    onError: () => setErr(true)
+  });
+}
+function StatusBadge({
+  status
+}) {
+  const map = {
+    reach: 'bd-red',
+    target: 'bd-blue',
+    safety: 'bd-green'
+  };
+  return /*#__PURE__*/React.createElement("span", {
+    className: `badge ${map[status] || 'bd-gray'}`
+  }, status);
+}
+function GPABar({
+  gpa
+}) {
+  if (!gpa) return /*#__PURE__*/React.createElement("span", {
+    className: "text-muted text-sm"
+  }, "\u2014");
+  const pct = gpa / 4.0 * 100;
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      minWidth: 80
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      fontWeight: 600,
+      color: gpaColor(gpa),
+      marginBottom: 2
+    }
+  }, gpa.toFixed(2)), /*#__PURE__*/React.createElement(ProgressBar, {
+    pct: pct,
+    color: gpaColor(gpa),
+    height: 5
+  }));
+}
+
+// ─────────────────────────────────────────────
+// DASHBOARD
+// ─────────────────────────────────────────────
+function Dashboard({
+  grades,
+  checked
+}) {
+  const completedCourseUnits = COURSES.filter(c => grades[c.id]).reduce((s, c) => s + c.units, 0);
+  const totalUnits = COURSES.reduce((s, c) => s + c.units, 0) + TOTAL_AP_UNITS;
+  const currentGPA = calcGPA(COURSES, grades);
+  const checkCount = Object.values(checked).filter(Boolean).length;
+  const checkPct = Math.round(checkCount / CHECKLIST_ITEMS.length * 100);
+  const urgentDeadlines = [{
+    label: 'UC Application Opens',
+    date: '2026-08-01',
+    color: 'var(--blue)'
+  }, {
+    label: 'TAG Window (UCI/UCSB)',
+    date: '2026-09-01',
+    color: 'var(--orange)'
+  }, {
+    label: 'UC Application Deadline',
+    date: '2026-11-30',
+    color: 'var(--red)'
+  }, {
+    label: 'FAFSA Opens',
+    date: '2026-12-01',
+    color: 'var(--teal)'
+  }, {
+    label: 'USC Marshall Deadline',
+    date: '2027-02-01',
+    color: 'var(--purple)'
+  }, {
+    label: 'SIR Deadline',
+    date: '2027-05-01',
+    color: 'var(--red)'
+  }];
+  const upcoming = urgentDeadlines.map(d => ({
+    ...d,
+    days: daysUntil(d.date)
+  })).filter(d => d.days >= 0).sort((a, b) => a.days - b.days).slice(0, 4);
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "hero"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hero-title"
+  }, "Valentino's Transfer Journey"), /*#__PURE__*/React.createElement("div", {
+    className: "hero-sub"
+  }, "Serra High School \u2192 Skyline College \u2192 Target: Fall 2027"), /*#__PURE__*/React.createElement("div", {
+    className: "hero-path"
+  }, "BUSINESS ADMINISTRATION \xB7 SILICON VALLEY \xB7 DREAM TRANSFER"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 16,
+      display: 'flex',
+      gap: 8,
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "badge",
+    style: {
+      background: 'rgba(255,255,255,.2)',
+      color: 'white',
+      fontSize: 12
+    }
+  }, "TAP / HTP Track"), /*#__PURE__*/React.createElement("span", {
+    className: "badge",
+    style: {
+      background: 'rgba(255,255,255,.2)',
+      color: 'white',
+      fontSize: 12
+    }
+  }, "20 AP Units Incoming"), /*#__PURE__*/React.createElement("span", {
+    className: "badge",
+    style: {
+      background: 'rgba(255,255,255,.2)',
+      color: 'white',
+      fontSize: 12
+    }
+  }, "8 Target Schools"))), /*#__PURE__*/React.createElement("div", {
+    className: "grid-4 mb-20"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: gpaColor(currentGPA)
+    }
+  }, currentGPA ? currentGPA.toFixed(2) : '—'), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Current GPA")), /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: 'var(--blue)'
+    }
+  }, completedCourseUnits + TOTAL_AP_UNITS), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Units Earned / Planned")), /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: 'var(--teal)'
+    }
+  }, checkPct, "%"), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Checklist Progress"), /*#__PURE__*/React.createElement(ProgressBar, {
+    pct: checkPct,
+    color: "var(--teal)"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: 'var(--orange)'
+    }
+  }, upcoming[0] ? upcoming[0].days : '—'), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Days to Next Deadline"))), /*#__PURE__*/React.createElement("div", {
+    className: "grid-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Upcoming Deadlines"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "Key dates on the transfer timeline"), upcoming.map(d => /*#__PURE__*/React.createElement("div", {
+    key: d.label,
+    className: "deadline-row"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      fontSize: 14
+    }
+  }, d.label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, fmtDate(d.date))), /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-red urgent-pulse"
+  }, d.days, "d")))), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Target Schools"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "8 programs across UC, CSU, and private"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      gap: 10,
+      alignItems: 'center'
+    }
+  }, SCHOOLS.map(s => /*#__PURE__*/React.createElement("a", {
+    key: s.id,
+    href: s.website,
+    target: "_blank",
+    rel: "noreferrer",
+    title: s.name,
+    style: {
+      textDecoration: 'none'
+    }
+  }, /*#__PURE__*/React.createElement(SchoolLogo, {
+    school: s,
+    size: 48
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "divider"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 8,
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-red"
+  }, "2 Reach"), /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-blue"
+  }, "4 Target"), /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-green"
+  }, "2 Safety"), /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-teal"
+  }, "2 TAG Available")))), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Unit Progress"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "60 transferable units required for UC transfer"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 24,
+      flexWrap: 'wrap',
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: 'var(--blue)',
+      fontFamily: 'Georgia,serif'
+    }
+  }, TOTAL_AP_UNITS), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, "AP Units")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: 'var(--teal)',
+      fontFamily: 'Georgia,serif'
+    }
+  }, totalUnits - TOTAL_AP_UNITS), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, "CC Units Planned")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: 'var(--green)',
+      fontFamily: 'Georgia,serif'
+    }
+  }, totalUnits), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, "Total Units")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 24,
+      fontWeight: 'bold',
+      color: 'var(--orange)',
+      fontFamily: 'Georgia,serif'
+    }
+  }, Math.max(0, 60 - totalUnits)), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, "Units Short of 60"))), /*#__PURE__*/React.createElement(ProgressBar, {
+    pct: totalUnits / 60 * 100,
+    color: "var(--blue)",
+    height: 12
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      marginTop: 4
+    }
+  }, totalUnits, " / 60 units (", Math.round(totalUnits / 60 * 100), "%)")));
+}
+
+// ─────────────────────────────────────────────
+// COURSE TRACKER
+// ─────────────────────────────────────────────
+function CourseTracker({
+  grades,
+  setGrades
+}) {
+  const [whatIfGrade, setWhatIfGrade] = useState('A');
+  const [whatIfCourse, setWhatIfCourse] = useState('');
+  const [showWhatIf, setShowWhatIf] = useState(false);
+  const allGPA = calcGPA(COURSES, grades);
+  const apPoints = AP_EXAMS.reduce((s, a) => s + GRADE_POINTS[a.gradeEq] * a.units, 0);
+  const apUnits = TOTAL_AP_UNITS;
+  const ccUnits = COURSES.filter(c => grades[c.id]).reduce((s, c) => s + c.units, 0);
+  const ccPoints = COURSES.filter(c => grades[c.id]).reduce((s, c) => s + GRADE_POINTS[grades[c.id]] * c.units, 0);
+  const whatIfGPA = (() => {
+    if (!whatIfCourse) return null;
+    const c = COURSES.find(x => x.id === whatIfCourse);
+    if (!c) return null;
+    let pts = 0,
+      units = 0;
+    COURSES.forEach(x => {
+      const g = x.id === whatIfCourse ? whatIfGrade : grades[x.id];
+      if (g && GRADE_POINTS[g] !== undefined) {
+        pts += GRADE_POINTS[g] * x.units;
+        units += x.units;
+      }
+    });
+    return units > 0 ? (pts / units).toFixed(2) : null;
+  })();
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex-between mb-20"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Course Tracker & GPA Calculator"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub"
+  }, "Manage grades across all semesters \xB7 auto-calculates cumulative GPA")), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline btn-sm",
+    onClick: () => setShowWhatIf(!showWhatIf)
+  }, showWhatIf ? 'Hide' : '🧮 What-If Scenario')), /*#__PURE__*/React.createElement("div", {
+    className: "grid-3 mb-20"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gpa-banner",
+    style: {
+      gridColumn: 'span 1'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "gpa-num"
+  }, allGPA ? allGPA.toFixed(2) : '—'), /*#__PURE__*/React.createElement("div", {
+    className: "gpa-lbl"
+  }, "CC CUMULATIVE GPA")), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      margin: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      marginBottom: 8,
+      textTransform: 'uppercase',
+      letterSpacing: .5
+    }
+  }, "AP Credits (Pre-Loaded)"), AP_EXAMS.map(ap => /*#__PURE__*/React.createElement("div", {
+    key: ap.id,
+    className: "flex-between",
+    style: {
+      fontSize: 13,
+      marginBottom: 5
+    }
+  }, /*#__PURE__*/React.createElement("span", null, ap.name), /*#__PURE__*/React.createElement("span", null, /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-green",
+    style: {
+      marginRight: 4
+    }
+  }, ap.gradeEq), /*#__PURE__*/React.createElement("span", {
+    className: "text-muted"
+  }, ap.units, "u")))), /*#__PURE__*/React.createElement("div", {
+    className: "divider"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex-between",
+    style: {
+      fontSize: 13,
+      fontWeight: 600
+    }
+  }, /*#__PURE__*/React.createElement("span", null, "AP Total"), /*#__PURE__*/React.createElement("span", null, TOTAL_AP_UNITS, " units"))), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      margin: 0
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      marginBottom: 8,
+      textTransform: 'uppercase',
+      letterSpacing: .5
+    }
+  }, "Unit Summary"), [['CC Units Graded', ccUnits], ['CC Units Planned', COURSES.filter(c => !grades[c.id]).reduce((s, c) => s + c.units, 0)], ['AP Transfer Units', apUnits], ['Total CC + AP Units', COURSES.reduce((s, c) => s + c.units, 0) + apUnits]].map(([l, v]) => /*#__PURE__*/React.createElement("div", {
+    key: l,
+    className: "flex-between",
+    style: {
+      fontSize: 13,
+      marginBottom: 6
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-muted"
+  }, l), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 600,
+      color: l === 'Total CC + AP Units' ? 'var(--blue)' : 'var(--text)'
+    }
+  }, v))), /*#__PURE__*/React.createElement("div", {
+    className: "divider"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: 'var(--muted)',
+      lineHeight: 1.5
+    }
+  }, "AP credits are pre-transfer \u2014 they do not affect your CC GPA. Cumulative GPA above reflects CC coursework only."))), showWhatIf && /*#__PURE__*/React.createElement("div", {
+    className: "card mb-20",
+    style: {
+      borderColor: 'var(--orange)',
+      borderWidth: 2
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title",
+    style: {
+      color: 'var(--orange)'
+    }
+  }, "What-If GPA Scenario"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      gap: 12,
+      alignItems: 'flex-end',
+      flexWrap: 'wrap'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      minWidth: 200
+    }
+  }, /*#__PURE__*/React.createElement("label", null, "Course"), /*#__PURE__*/React.createElement("select", {
+    value: whatIfCourse,
+    onChange: e => setWhatIfCourse(e.target.value)
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "\u2014 select course \u2014"), COURSES.map(c => /*#__PURE__*/React.createElement("option", {
+    key: c.id,
+    value: c.id
+  }, c.name)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 100
+    }
+  }, /*#__PURE__*/React.createElement("label", null, "What-If Grade"), /*#__PURE__*/React.createElement("select", {
+    value: whatIfGrade,
+    onChange: e => setWhatIfGrade(e.target.value)
+  }, GRADES_LIST.map(g => /*#__PURE__*/React.createElement("option", {
+    key: g,
+    value: g
+  }, g)))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      paddingBottom: 2
+    }
+  }, whatIfGPA ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      fontFamily: 'Georgia,serif',
+      color: gpaColor(parseFloat(whatIfGPA))
+    }
+  }, "GPA: ", whatIfGPA) : /*#__PURE__*/React.createElement("span", {
+    className: "text-muted"
+  }, "Select a course above")))), SEMESTERS.map(sem => {
+    const semCourses = COURSES.filter(c => c.semester === sem.id);
+    const semUnits = semCourses.reduce((s, c) => s + c.units, 0);
+    const semGPA = calcGPA(semCourses, grades);
+    return /*#__PURE__*/React.createElement("div", {
+      key: sem.id,
+      className: "sem-card"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "sem-hdr",
+      style: {
+        background: sem.color
+      }
+    }, /*#__PURE__*/React.createElement("span", null, sem.label), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 13,
+        opacity: .85
+      }
+    }, semUnits, " units", semGPA ? ` · Sem GPA: ${semGPA.toFixed(2)}` : '')), /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: '4px 0'
+      }
+    }, semCourses.map(c => /*#__PURE__*/React.createElement("div", {
+      key: c.id,
+      style: {
+        display: 'grid',
+        gridTemplateColumns: '1fr 80px 90px 80px',
+        gap: 8,
+        alignItems: 'center',
+        padding: '10px 18px',
+        borderBottom: '1px solid var(--light)'
+      }
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontWeight: 600,
+        fontSize: 14
+      }
+    }, c.name), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 11,
+        color: 'var(--muted)'
+      }
+    }, c.units, " units \xB7 Prereq: ", c.prereq, c.igetc ? /*#__PURE__*/React.createElement("span", {
+      className: "badge bd-teal",
+      style: {
+        marginLeft: 6
+      }
+    }, "IGETC ", c.igetc) : null)), /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: 12,
+        color: 'var(--muted)'
+      }
+    }, /*#__PURE__*/React.createElement("select", {
+      className: "grade-sel",
+      value: grades[c.id] || '',
+      onChange: e => setGrades(g => ({
+        ...g,
+        [c.id]: e.target.value
+      }))
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "Grade"), GRADES_LIST.map(g => /*#__PURE__*/React.createElement("option", {
+      key: g,
+      value: g
+    }, g)))), /*#__PURE__*/React.createElement("div", null, grades[c.id] ? /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontWeight: 600,
+        color: gpaColor(GRADE_POINTS[grades[c.id]])
+      }
+    }, GRADE_POINTS[grades[c.id]].toFixed(1), " pts") : /*#__PURE__*/React.createElement("span", {
+      className: "badge bd-gray"
+    }, "Planned")), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("details", {
+      style: {
+        fontSize: 12
+      }
+    }, /*#__PURE__*/React.createElement("summary", {
+      style: {
+        cursor: 'pointer',
+        color: 'var(--blue)'
+      }
+    }, "Articulations"), /*#__PURE__*/React.createElement("div", {
+      style: {
+        paddingTop: 4,
+        lineHeight: 1.7
+      }
+    }, Object.entries(c.articulation).map(([k, v]) => /*#__PURE__*/React.createElement("div", {
+      key: k
+    }, /*#__PURE__*/React.createElement("strong", {
+      style: {
+        textTransform: 'uppercase',
+        fontSize: 10
+      }
+    }, k, ":"), " ", v)))))))));
+  }));
+}
+
+// ─────────────────────────────────────────────
+// CHECKLIST
+// ─────────────────────────────────────────────
+function ChecklistTab({
+  checked,
+  setChecked
+}) {
+  const [openPhases, setOpenPhases] = useState({
+    now: true,
+    summer: true,
+    fall: false,
+    winter: false,
+    spring: false
+  });
+  const [openItems, setOpenItems] = useState({});
+  function togglePhase(id) {
+    setOpenPhases(p => ({
+      ...p,
+      [id]: !p[id]
+    }));
+  }
+  function toggleItem(id) {
+    setOpenItems(p => ({
+      ...p,
+      [id]: !p[id]
+    }));
+  }
+  function toggleCheck(id, e) {
+    e.stopPropagation();
+    setChecked(c => ({
+      ...c,
+      [id]: !c[id]
+    }));
+  }
+  const total = CHECKLIST_ITEMS.length;
+  const done = Object.values(checked).filter(Boolean).length;
+  const pct = Math.round(done / total * 100);
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex-between mb-16"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Application Checklist"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub"
+  }, "Track every step of your transfer journey \u2014 ", done, "/", total, " completed")), /*#__PURE__*/React.createElement("div", {
+    style: {
+      textAlign: 'right'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 28,
+      fontWeight: 'bold',
+      fontFamily: 'Georgia,serif',
+      color: 'var(--teal)'
+    }
+  }, pct, "%"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, "Overall Progress"))), /*#__PURE__*/React.createElement(ProgressBar, {
+    pct: pct,
+    color: "var(--teal)",
+    height: 12
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "mb-20"
+  }), CHECKLIST_PHASES.map(phase => {
+    const items = CHECKLIST_ITEMS.filter(i => i.phase === phase.id);
+    const phaseDone = items.filter(i => checked[i.id]).length;
+    const phasePct = Math.round(phaseDone / items.length * 100);
+    return /*#__PURE__*/React.createElement("div", {
+      key: phase.id,
+      className: "mb-16"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "phase-hdr",
+      style: {
+        background: phase.color
+      },
+      onClick: () => togglePhase(phase.id)
+    }, /*#__PURE__*/React.createElement("span", null, phase.emoji, " ", phase.label), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-12"
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 13,
+        opacity: .85,
+        fontFamily: 'sans-serif'
+      }
+    }, phaseDone, "/", items.length), /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 16
+      }
+    }, openPhases[phase.id] ? '▲' : '▼'))), openPhases[phase.id] && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement(ProgressBar, {
+      pct: phasePct,
+      color: phase.color
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "mb-8"
+    }), items.map(item => /*#__PURE__*/React.createElement("div", {
+      key: item.id,
+      className: `checklist-item ${checked[item.id] ? 'done' : ''}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "cl-row",
+      onClick: () => toggleItem(item.id)
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "checkbox",
+      className: "cl-check",
+      checked: !!checked[item.id],
+      onChange: e => toggleCheck(item.id, e),
+      onClick: e => e.stopPropagation()
+    }), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 14,
+        fontWeight: checked[item.id] ? 400 : 600,
+        textDecoration: checked[item.id] ? 'line-through' : 'none'
+      }
+    }, item.task), item.urgent && !checked[item.id] && /*#__PURE__*/React.createElement("span", {
+      className: "badge bd-red urgent-pulse",
+      style: {
+        marginLeft: 8
+      }
+    }, "URGENT")), item.deadline && /*#__PURE__*/React.createElement("span", {
+      style: {
+        fontSize: 12,
+        color: 'var(--muted)',
+        whiteSpace: 'nowrap',
+        marginRight: 8
+      }
+    }, item.deadline), /*#__PURE__*/React.createElement("span", {
+      className: `arrow ${openItems[item.id] ? 'open' : ''}`,
+      style: {
+        fontSize: 12,
+        color: 'var(--muted)'
+      }
+    }, "\u25B6")), openItems[item.id] && /*#__PURE__*/React.createElement("div", {
+      className: "cl-detail"
+    }, /*#__PURE__*/React.createElement("p", {
+      style: {
+        marginBottom: 8
+      }
+    }, item.detail), item.link && /*#__PURE__*/React.createElement("a", {
+      href: item.link,
+      target: "_blank",
+      rel: "noreferrer",
+      className: "btn btn-outline btn-sm"
+    }, "Open Link \u2192"))))));
+  }));
+}
+
+// ─────────────────────────────────────────────
+// SCHOOLS
+// ─────────────────────────────────────────────
+function SchoolsTab() {
+  const [filter, setFilter] = useState('all');
+  const [openSchool, setOpenSchool] = useState(null);
+  const filters = ['all', 'reach', 'target', 'safety', 'tag'];
+  const filtered = SCHOOLS.filter(s => {
+    if (filter === 'all') return true;
+    if (filter === 'tag') return s.tag;
+    return s.status === filter;
+  });
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex-between mb-8"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Target Schools"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub"
+  }, "Compare programs, requirements, and deadlines across 8 schools"))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-8 mb-20",
+    style: {
+      flexWrap: 'wrap'
+    }
+  }, filters.map(f => /*#__PURE__*/React.createElement("button", {
+    key: f,
+    className: `filter-btn ${filter === f ? 'active' : ''}`,
+    onClick: () => setFilter(f)
+  }, f === 'tag' ? '🎯 TAG Available' : f.charAt(0).toUpperCase() + f.slice(1)))), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      padding: 0,
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "table-wrap"
+  }, /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "School"), /*#__PURE__*/React.createElement("th", null, "Program"), /*#__PURE__*/React.createElement("th", null, "Target GPA"), /*#__PURE__*/React.createElement("th", null, "Deadline"), /*#__PURE__*/React.createElement("th", null, "Status"), /*#__PURE__*/React.createElement("th", null, "TAG"), /*#__PURE__*/React.createElement("th", null))), /*#__PURE__*/React.createElement("tbody", null, filtered.map(s => /*#__PURE__*/React.createElement(React.Fragment, {
+    key: s.id
+  }, /*#__PURE__*/React.createElement("tr", {
+    style: {
+      cursor: 'pointer'
+    },
+    onClick: () => setOpenSchool(openSchool === s.id ? null : s.id)
+  }, /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-12"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: s.website,
+    target: "_blank",
+    rel: "noreferrer",
+    onClick: e => e.stopPropagation(),
+    title: s.name
+  }, /*#__PURE__*/React.createElement(SchoolLogo, {
+    school: s,
+    size: 60
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      fontSize: 14
+    }
+  }, s.name), /*#__PURE__*/React.createElement("a", {
+    href: s.website,
+    target: "_blank",
+    rel: "noreferrer",
+    style: {
+      fontSize: 11,
+      color: 'var(--blue)'
+    },
+    onClick: e => e.stopPropagation()
+  }, "Visit site \u2192")))), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontSize: 13
+    }
+  }, s.program, s.minor ? /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      color: 'var(--teal)',
+      marginTop: 2,
+      fontWeight: 500
+    }
+  }, "+ Minor: ", s.minor) : null), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(GPABar, {
+    gpa: s.targetGPA
+  })), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontSize: 13,
+      whiteSpace: 'nowrap'
+    }
+  }, s.deadlineLabel), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement(StatusBadge, {
+    status: s.status
+  })), /*#__PURE__*/React.createElement("td", null, s.tag ? /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-teal"
+  }, "TAG") : /*#__PURE__*/React.createElement("span", {
+    className: "badge bd-gray"
+  }, "\u2014")), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontSize: 12,
+      color: 'var(--blue)'
+    }
+  }, openSchool === s.id ? '▲' : '▼')), openSchool === s.id && /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("td", {
+    colSpan: 7,
+    style: {
+      background: 'var(--bg)',
+      padding: '16px 24px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "grid-2"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      marginBottom: 6,
+      fontSize: 13,
+      textTransform: 'uppercase',
+      letterSpacing: .5,
+      color: 'var(--muted)'
+    }
+  }, "Notes"), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 13,
+      lineHeight: 1.7
+    }
+  }, s.notes)), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      marginBottom: 6,
+      fontSize: 13,
+      textTransform: 'uppercase',
+      letterSpacing: .5,
+      color: 'var(--muted)'
+    }
+  }, "Key Requirements"), /*#__PURE__*/React.createElement("ul", {
+    style: {
+      fontSize: 13,
+      lineHeight: 2,
+      paddingLeft: 18
+    }
+  }, s.requirements.map(r => /*#__PURE__*/React.createElement("li", {
+    key: r
+  }, r))))))))))))));
+}
+
+// ─────────────────────────────────────────────
+// PORTFOLIO
+// ─────────────────────────────────────────────
+function PortfolioTab() {
+  const [projects, setProjects] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('v-projects') || 'null') || PROJECTS_DEFAULT;
+    } catch {
+      return PROJECTS_DEFAULT;
+    }
+  });
+  const [showModal, setShowModal] = useState(false);
+  const [filter, setFilter] = useState('all');
+  const [form, setForm] = useState({
+    name: '',
+    status: 'planned',
+    tech: '',
+    description: '',
+    github: '',
+    demo: '',
+    startDate: '',
+    endDate: ''
+  });
+  useEffect(() => {
+    localStorage.setItem('v-projects', JSON.stringify(projects));
+  }, [projects]);
+  function addProject() {
+    if (!form.name) return;
+    const p = {
+      ...form,
+      id: 'p-' + Date.now(),
+      tech: form.tech.split(',').map(t => t.trim()).filter(Boolean)
+    };
+    setProjects(prev => [...prev, p]);
+    setForm({
+      name: '',
+      status: 'planned',
+      tech: '',
+      description: '',
+      github: '',
+      demo: '',
+      startDate: '',
+      endDate: ''
+    });
+    setShowModal(false);
+  }
+  const statuses = ['all', 'in-progress', 'completed', 'planned'];
+  const filtered = filter === 'all' ? projects : projects.filter(p => p.status === filter);
+  const statusColor = {
+    completed: 'var(--green)',
+    'in-progress': 'var(--orange)',
+    planned: 'var(--muted)'
+  };
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex-between mb-16"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Portfolio & Projects"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub"
+  }, "Demonstrating technical depth for CS/Business transfer applications")), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary btn-sm",
+    onClick: () => setShowModal(true)
+  }, "+ Add Project")), /*#__PURE__*/React.createElement("div", {
+    className: "card mb-20",
+    style: {
+      background: 'linear-gradient(135deg,#EBF5FB,#E8F8F5)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: 'Georgia,serif',
+      fontWeight: 'bold',
+      fontSize: 16,
+      marginBottom: 8
+    }
+  }, "GitHub: ", /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/tinoxo",
+    target: "_blank",
+    rel: "noreferrer",
+    style: {
+      color: 'var(--blue)'
+    }
+  }, "github.com/tinoxo")), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 13,
+      color: 'var(--muted)',
+      lineHeight: 1.7
+    }
+  }, "My portfolio demonstrates hands-on application of CS concepts learned at Skyline. Projects span game development (Python/Pygame), web apps (React/JavaScript), and algorithm visualization \u2014 bridging the gap between academic coursework and real engineering work that admissions committees want to see.")), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-8 mb-20",
+    style: {
+      flexWrap: 'wrap'
+    }
+  }, statuses.map(s => /*#__PURE__*/React.createElement("button", {
+    key: s,
+    className: `filter-btn ${filter === s ? 'active' : ''}`,
+    onClick: () => setFilter(s)
+  }, s === 'in-progress' ? 'In Progress' : s.charAt(0).toUpperCase() + s.slice(1)))), /*#__PURE__*/React.createElement("div", {
+    className: "grid-3"
+  }, filtered.map(p => /*#__PURE__*/React.createElement("div", {
+    key: p.id,
+    className: "proj-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-between mb-8"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "badge",
+    style: {
+      background: statusColor[p.status] + '22',
+      color: statusColor[p.status]
+    }
+  }, p.status === 'in-progress' ? 'In Progress' : p.status.charAt(0).toUpperCase() + p.status.slice(1)), p.startDate && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 11,
+      color: 'var(--muted)'
+    }
+  }, p.startDate, p.endDate ? ' → ' + p.endDate : ' → present')), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: 'Georgia,serif',
+      fontWeight: 'bold',
+      fontSize: 17,
+      marginBottom: 8
+    }
+  }, p.name), /*#__PURE__*/React.createElement("p", {
+    style: {
+      fontSize: 13,
+      color: 'var(--muted)',
+      lineHeight: 1.6,
+      marginBottom: 12
+    }
+  }, p.description), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginBottom: 12
+    }
+  }, (Array.isArray(p.tech) ? p.tech : [p.tech]).map(t => /*#__PURE__*/React.createElement("span", {
+    key: t,
+    className: "tag"
+  }, t))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-8",
+    style: {
+      flexWrap: 'wrap'
+    }
+  }, p.github && /*#__PURE__*/React.createElement("a", {
+    href: p.github,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "btn btn-outline btn-sm"
+  }, "GitHub"), p.demo && /*#__PURE__*/React.createElement("a", {
+    href: p.demo,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "btn btn-green btn-sm"
+  }, "Live Demo"))))), showModal && /*#__PURE__*/React.createElement("div", {
+    className: "modal-overlay",
+    onClick: () => setShowModal(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "modal-title"
+  }, "Add New Project"), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Project Name *"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: form.name,
+    onChange: e => setForm(f => ({
+      ...f,
+      name: e.target.value
+    }))
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Status"), /*#__PURE__*/React.createElement("select", {
+    value: form.status,
+    onChange: e => setForm(f => ({
+      ...f,
+      status: e.target.value
+    }))
+  }, /*#__PURE__*/React.createElement("option", {
+    value: "planned"
+  }, "Planned"), /*#__PURE__*/React.createElement("option", {
+    value: "in-progress"
+  }, "In Progress"), /*#__PURE__*/React.createElement("option", {
+    value: "completed"
+  }, "Completed"))), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Description"), /*#__PURE__*/React.createElement("textarea", {
+    rows: 3,
+    value: form.description,
+    onChange: e => setForm(f => ({
+      ...f,
+      description: e.target.value
+    }))
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Tech Stack (comma-separated)"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: form.tech,
+    onChange: e => setForm(f => ({
+      ...f,
+      tech: e.target.value
+    })),
+    placeholder: "React, Python, Node.js..."
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "GitHub URL"), /*#__PURE__*/React.createElement("input", {
+    type: "url",
+    value: form.github,
+    onChange: e => setForm(f => ({
+      ...f,
+      github: e.target.value
+    })),
+    placeholder: "https://github.com/..."
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Live Demo URL"), /*#__PURE__*/React.createElement("input", {
+    type: "url",
+    value: form.demo,
+    onChange: e => setForm(f => ({
+      ...f,
+      demo: e.target.value
+    }))
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "grid-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "Start Date"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: form.startDate,
+    onChange: e => setForm(f => ({
+      ...f,
+      startDate: e.target.value
+    })),
+    placeholder: "2026-01"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "form-group"
+  }, /*#__PURE__*/React.createElement("label", null, "End Date"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: form.endDate,
+    onChange: e => setForm(f => ({
+      ...f,
+      endDate: e.target.value
+    })),
+    placeholder: "2026-06 (or leave blank)"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-8",
+    style: {
+      justifyContent: 'flex-end',
+      marginTop: 8
+    }
+  }, /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-outline",
+    onClick: () => setShowModal(false)
+  }, "Cancel"), /*#__PURE__*/React.createElement("button", {
+    className: "btn btn-primary",
+    onClick: addProject
+  }, "Add Project")))));
+}
+
+// ─────────────────────────────────────────────
+// AP CREDITS & IGETC
+// ─────────────────────────────────────────────
+function APCreditTab() {
+  const schoolCols = SCHOOLS.map(s => ({
+    id: s.id,
+    abbr: s.abbr,
+    color: s.color
+  }));
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "AP Credit Translator"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub mb-20"
+  }, "How your 5 AP exams transfer at each target school"), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      padding: 0,
+      overflow: 'hidden',
+      marginBottom: 24
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "table-wrap"
+  }, /*#__PURE__*/React.createElement("table", null, /*#__PURE__*/React.createElement("thead", null, /*#__PURE__*/React.createElement("tr", null, /*#__PURE__*/React.createElement("th", null, "AP Exam"), /*#__PURE__*/React.createElement("th", null, "Score"), /*#__PURE__*/React.createElement("th", null, "Units"), schoolCols.map(s => /*#__PURE__*/React.createElement("th", {
+    key: s.id,
+    style: {
+      color: s.color
+    }
+  }, s.abbr)), /*#__PURE__*/React.createElement("th", null, "Notes"))), /*#__PURE__*/React.createElement("tbody", null, AP_EXAMS.map(ap => /*#__PURE__*/React.createElement("tr", {
+    key: ap.id
+  }, /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontWeight: 600,
+      fontSize: 13
+    }
+  }, ap.name), /*#__PURE__*/React.createElement("td", null, /*#__PURE__*/React.createElement("span", {
+    className: `badge ${ap.score >= 4 ? 'bd-green' : 'bd-yellow'}`
+  }, ap.score)), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontWeight: 600
+    }
+  }, ap.units), schoolCols.map(s => /*#__PURE__*/React.createElement("td", {
+    key: s.id,
+    style: {
+      fontSize: 12,
+      color: 'var(--text)'
+    }
+  }, ap.equiv[s.id] || /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'var(--muted)'
+    }
+  }, "\u2014"))), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      minWidth: 180
+    }
+  }, ap.note)))), /*#__PURE__*/React.createElement("tfoot", null, /*#__PURE__*/React.createElement("tr", {
+    style: {
+      background: 'var(--bg)'
+    }
+  }, /*#__PURE__*/React.createElement("td", {
+    colSpan: 2,
+    style: {
+      fontWeight: 700,
+      fontSize: 13
+    }
+  }, "Total AP Units"), /*#__PURE__*/React.createElement("td", {
+    style: {
+      fontWeight: 700
+    }
+  }, TOTAL_AP_UNITS), schoolCols.map(s => /*#__PURE__*/React.createElement("td", {
+    key: s.id
+  })), /*#__PURE__*/React.createElement("td", null)))))), /*#__PURE__*/React.createElement("div", {
+    className: "card",
+    style: {
+      borderColor: 'var(--yellow)',
+      borderWidth: 2
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      marginBottom: 8,
+      color: 'var(--yellow)'
+    }
+  }, "\u26A0\uFE0F Important Notes"), /*#__PURE__*/React.createElement("ul", {
+    style: {
+      fontSize: 13,
+      lineHeight: 2,
+      paddingLeft: 20,
+      color: 'var(--muted)'
+    }
+  }, /*#__PURE__*/React.createElement("li", null, "AP credit policies vary \u2014 always verify on each school's official AP credit page or with an advisor."), /*#__PURE__*/React.createElement("li", null, "Even if a school grants AP credit, the course may still be required for your major (check major-specific requirements)."), /*#__PURE__*/React.createElement("li", null, "UC schools generally accept AP credit but may require the equivalent course for business/STEM majors."), /*#__PURE__*/React.createElement("li", null, "AP credit typically does ", /*#__PURE__*/React.createElement("strong", null, "not"), " count toward Skyline CC GPA (it shows as transfer credit)."), /*#__PURE__*/React.createElement("li", null, "Request official AP score reports sent to Skyline College to officially post the credits."))));
+}
+function IGETCTab() {
+  const [openArea, setOpenArea] = useState(null);
+  const completed = IGETC_AREAS.filter(a => a.status === 'completed').length;
+  const planned = IGETC_AREAS.filter(a => a.status === 'planned').length;
+  const missing = IGETC_AREAS.filter(a => a.status === 'missing').length;
+  const statusIcon = {
+    completed: '✅',
+    planned: '🔵',
+    missing: '❌',
+    verify: '⚠️'
+  };
+  const statusBadge = {
+    completed: 'bd-green',
+    planned: 'bd-blue',
+    missing: 'bd-red',
+    verify: 'bd-yellow'
+  };
+  const totalUnitsPlanned = COURSES.reduce((s, c) => s + c.units, 0) + TOTAL_AP_UNITS;
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "IGETC Tracker"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub mb-20"
+  }, "Intersegmental General Education Transfer Curriculum \u2014 required for UC transfer GE"), /*#__PURE__*/React.createElement("div", {
+    className: "grid-4 mb-20"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: 'var(--green)'
+    }
+  }, completed), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Areas Complete")), /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: 'var(--blue)'
+    }
+  }, planned), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Areas Planned")), /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: 'var(--red)'
+    }
+  }, missing), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Areas Missing")), /*#__PURE__*/React.createElement("div", {
+    className: "stat-card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "stat-val",
+    style: {
+      color: 'var(--teal)'
+    }
+  }, totalUnitsPlanned), /*#__PURE__*/React.createElement("div", {
+    className: "stat-lbl"
+  }, "Total Units (60 req.)"), /*#__PURE__*/React.createElement(ProgressBar, {
+    pct: totalUnitsPlanned / 60 * 100,
+    color: "var(--teal)"
+  }))), IGETC_AREAS.map(area => /*#__PURE__*/React.createElement("div", {
+    key: area.id,
+    className: "igetc-area"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "igetc-hdr",
+    onClick: () => setOpenArea(openArea === area.id ? null : area.id)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-12"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 18
+    }
+  }, statusIcon[area.status]), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontWeight: 600,
+      fontSize: 14
+    }
+  }, area.area, ": ", area.name), area.units > 0 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      marginLeft: 8
+    }
+  }, area.units, "+ units"))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-8"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `badge ${statusBadge[area.status]}`
+  }, area.status), /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, openArea === area.id ? '▲' : '▼'))), openArea === area.id && /*#__PURE__*/React.createElement("div", {
+    className: "igetc-body"
+  }, /*#__PURE__*/React.createElement("strong", {
+    style: {
+      fontSize: 12,
+      textTransform: 'uppercase',
+      letterSpacing: .4,
+      color: 'var(--muted)'
+    }
+  }, "Fulfilling Courses / Credits:"), /*#__PURE__*/React.createElement("ul", {
+    style: {
+      marginTop: 6,
+      paddingLeft: 18
+    }
+  }, area.courses.map(c => /*#__PURE__*/React.createElement("li", {
+    key: c,
+    style: {
+      lineHeight: 1.9
+    }
+  }, c)))))), /*#__PURE__*/React.createElement("div", {
+    className: "card mt-16",
+    style: {
+      borderColor: 'var(--green)',
+      borderWidth: 2
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      color: 'var(--green)',
+      marginBottom: 8
+    }
+  }, "\u2705 All IGETC Areas Covered"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      lineHeight: 1.9,
+      color: 'var(--muted)'
+    }
+  }, /*#__PURE__*/React.createElement("strong", null, "Area 3A:"), " Film Appreciation (De Anza, Winter) + Music Appreciation (Spring) \u2014 double coverage.", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("strong", null, "Area 3B:"), " Ethics/Philosophy (Spring) covers humanities. AP US History also satisfies 3B.", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("strong", null, "Area 5B:"), " Biology 101 (Spring 2027) covers biological sciences.", /*#__PURE__*/React.createElement("br", null), /*#__PURE__*/React.createElement("strong", null, "Reminder:"), " Request official IGETC certification from your Skyline counselor before submitting UC applications. Confirm AP lab requirements for Area 5A with counselor.")));
+}
+
+// ─────────────────────────────────────────────
+// HTP TRACKER
+// ─────────────────────────────────────────────
+function HTPTab() {
+  const [htpState, setHTPState] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('v-htp') || '{}');
+    } catch {
+      return {};
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('v-htp', JSON.stringify(htpState));
+  }, [htpState]);
+  function toggle(key) {
+    setHTPState(s => ({
+      ...s,
+      [key]: !s[key]
+    }));
+  }
+  function setVal(key, val) {
+    setHTPState(s => ({
+      ...s,
+      [key]: val
+    }));
+  }
+  const honorsCourses = ['CALC I (Summer 2026)', 'ENGL 1A (Fall 2026)', 'Macro (Fall 2026)', 'Stats (Winter 2026/27)'];
+  const completedHonors = honorsCourses.filter((_, i) => htpState['hc' + i]).length;
+  const serviceHours = parseInt(htpState.serviceHours) || 0;
+  const gpaOk = true; // assumed based on target
+  const idst105 = !!htpState.idst105;
+  const allMet = idst105 && completedHonors >= 4 && serviceHours >= 16;
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "HTP Tracker"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub mb-20"
+  }, "Honors Transfer Program \u2014 Skyline College \xB7 TAP Certification Track"), /*#__PURE__*/React.createElement("div", {
+    className: "card mb-20",
+    style: {
+      background: allMet ? 'linear-gradient(135deg,#EAFAF1,#E8F8F5)' : 'linear-gradient(135deg,#FEF9E7,#FDEDEC)',
+      borderColor: allMet ? 'var(--green)' : 'var(--orange)',
+      borderWidth: 2
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontFamily: 'Georgia,serif',
+      fontSize: 20,
+      fontWeight: 'bold',
+      marginBottom: 8
+    }
+  }, "HTP Status: ", allMet ? '✅ On Track for TAP Certification' : '⚠️ In Progress — Requirements Pending'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: 'var(--muted)',
+      lineHeight: 1.7
+    }
+  }, "Completing HTP earns you the Transfer Alliance Program (TAP) certification, which grants priority consideration and guaranteed review at select UC campuses. TAP is especially valuable for UCI and UCLA admissions.")), /*#__PURE__*/React.createElement("div", {
+    className: "grid-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Eligibility Requirements"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "All 4 must be met for TAP certification"), [{
+    key: 'idst105',
+    label: 'Complete IDST 105 (HTP Orientation)',
+    desc: 'Fall 2026 — required first semester',
+    done: idst105
+  }, {
+    key: 'gpa',
+    label: 'Maintain 3.25+ GPA',
+    desc: 'Current trajectory: targeting 3.7+',
+    done: gpaOk
+  }].map(item => /*#__PURE__*/React.createElement("div", {
+    key: item.key,
+    className: "htp-item"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    className: "cl-check",
+    checked: item.key === 'gpa' ? gpaOk : !!htpState[item.key],
+    onChange: () => item.key !== 'gpa' && toggle(item.key)
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      fontSize: 14
+    }
+  }, item.label), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, item.desc)))), /*#__PURE__*/React.createElement("div", {
+    className: "htp-item"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 18,
+      flexShrink: 0,
+      fontWeight: 'bold',
+      color: completedHonors >= 4 ? 'var(--green)' : 'var(--orange)',
+      fontSize: 18
+    }
+  }, completedHonors >= 4 ? '✓' : completedHonors + '/4'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      fontSize: 14
+    }
+  }, "Complete 4 Honors Contracts"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      marginBottom: 8
+    }
+  }, completedHonors, "/4 completed"), /*#__PURE__*/React.createElement(ProgressBar, {
+    pct: completedHonors / 4 * 100,
+    color: "var(--purple)"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8
+    }
+  }, honorsCourses.map((c, i) => /*#__PURE__*/React.createElement("label", {
+    key: c,
+    style: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8,
+      marginBottom: 6,
+      cursor: 'pointer',
+      fontSize: 13,
+      textTransform: 'none',
+      letterSpacing: 0,
+      color: 'var(--text)',
+      fontWeight: 400
+    }
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "checkbox",
+    checked: !!htpState['hc' + i],
+    onChange: () => toggle('hc' + i),
+    style: {
+      accentColor: 'var(--purple)'
+    }
+  }), c))))), /*#__PURE__*/React.createElement("div", {
+    className: "htp-item"
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      width: 18,
+      flexShrink: 0,
+      fontWeight: 'bold',
+      color: serviceHours >= 16 ? 'var(--green)' : 'var(--orange)',
+      fontSize: 18
+    }
+  }, serviceHours >= 16 ? '✓' : serviceHours + '/16h'), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      fontSize: 14
+    }
+  }, "16 Hours Community Service"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      marginBottom: 8
+    }
+  }, serviceHours, "/16 hours logged"), /*#__PURE__*/React.createElement(ProgressBar, {
+    pct: serviceHours / 16 * 100,
+    color: "var(--teal)"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 8,
+      display: 'flex',
+      alignItems: 'center',
+      gap: 8
+    }
+  }, /*#__PURE__*/React.createElement("label", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)',
+      textTransform: 'uppercase',
+      letterSpacing: .4,
+      fontWeight: 600,
+      whiteSpace: 'nowrap',
+      marginBottom: 0
+    }
+  }, "Log hours:"), /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    min: "0",
+    max: "200",
+    value: htpState.serviceHours || '',
+    onChange: e => setVal('serviceHours', e.target.value),
+    style: {
+      width: 80,
+      padding: '4px 8px',
+      border: '1px solid var(--light)',
+      borderRadius: 4,
+      fontSize: 13
+    },
+    placeholder: "0"
+  }))))), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "TAP Certification Timeline"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "Transfer Alliance Program milestones"), [{
+    date: 'Summer 2026',
+    event: 'Begin CALC I — first opportunity for honors contract',
+    done: false
+  }, {
+    date: 'Fall 2026',
+    event: 'Enroll in IDST 105, add 2 honors contracts, begin service hours',
+    done: false
+  }, {
+    date: 'Winter 2026/27',
+    event: '2 more honors contracts, continue service hours (8+ total)',
+    done: false
+  }, {
+    date: 'Spring 2027',
+    event: 'Complete 16 service hours, request TAP certification letter',
+    done: false
+  }, {
+    date: 'April 2027',
+    event: 'Submit TAP certification to UC schools',
+    done: false
+  }].map((step, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    style: {
+      display: 'flex',
+      gap: 12,
+      marginBottom: 14
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flexShrink: 0,
+      width: 12,
+      height: 12,
+      borderRadius: '50%',
+      background: step.done ? 'var(--green)' : 'var(--light)',
+      border: '2px solid',
+      borderColor: step.done ? 'var(--green)' : 'var(--muted)',
+      marginTop: 4
+    }
+  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      fontWeight: 700,
+      color: 'var(--muted)',
+      textTransform: 'uppercase',
+      letterSpacing: .4
+    }
+  }, step.date), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13
+    }
+  }, step.event)))), /*#__PURE__*/React.createElement("div", {
+    className: "divider"
+  }), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600,
+      fontSize: 13,
+      marginBottom: 8
+    }
+  }, "TAP Benefits at UC Schools:"), /*#__PURE__*/React.createElement("ul", {
+    style: {
+      fontSize: 13,
+      lineHeight: 1.9,
+      paddingLeft: 18,
+      color: 'var(--muted)'
+    }
+  }, /*#__PURE__*/React.createElement("li", null, "Priority review / guaranteed review at participating UCs"), /*#__PURE__*/React.createElement("li", null, "UCI: TAP certification provides additional consideration"), /*#__PURE__*/React.createElement("li", null, "UCLA: TAP is strongly recommended for competitive programs"), /*#__PURE__*/React.createElement("li", null, "Demonstrates academic excellence beyond GPA alone")))));
+}
+
+// ─────────────────────────────────────────────
+// RESOURCES
+// ─────────────────────────────────────────────
+function ResourcesTab() {
+  const sections = [{
+    title: 'UC & CSU Applications',
+    links: [{
+      label: 'UC Application Portal',
+      url: 'https://apply.universityofcalifornia.edu',
+      note: 'Opens Aug 1, due Nov 1–30'
+    }, {
+      label: 'CSU Application (Cal State Apply)',
+      url: 'https://www2.calstate.edu/apply',
+      note: 'Opens Oct 1, due Nov 30'
+    }, {
+      label: 'UC Transfer Admission Guarantee (TAG)',
+      url: 'https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/transfer-admission-guarantee-tag.html',
+      note: 'Window: Sept 1–30'
+    }, {
+      label: 'UC Personal Insight Questions',
+      url: 'https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-transfer/personal-insight-questions.html',
+      note: '8 prompts, answer 4'
+    }]
+  }, {
+    title: 'Course Articulation',
+    links: [{
+      label: 'ASSIST.org — Course Articulation',
+      url: 'https://assist.org',
+      note: 'The definitive source for CC → UC/CSU transfer equivalencies'
+    }, {
+      label: 'UC Transferable Course List',
+      url: 'https://www.ucop.edu/transfer-articulation/',
+      note: 'Verify IGETC & major prep courses'
+    }, {
+      label: 'College Board AP Credit Policies',
+      url: 'https://apcentral.collegeboard.org/exam-scores-data/reports-data/ap-exam-score-recipient',
+      note: 'AP score reporting'
+    }]
+  }, {
+    title: 'Financial Aid',
+    links: [{
+      label: 'FAFSA',
+      url: 'https://studentaid.gov/h/apply-for-aid/fafsa',
+      note: 'Opens Dec 1, priority deadline Jan 1'
+    }, {
+      label: 'California Dream Act Application',
+      url: 'https://www.csac.ca.gov/california-dream-act',
+      note: 'For AB 540 students'
+    }, {
+      label: 'Cal Grant',
+      url: 'https://www.csac.ca.gov/cal-grants',
+      note: 'California state grant — require FAFSA/Dream Act'
+    }]
+  }, {
+    title: 'Skyline College Resources',
+    links: [{
+      label: 'Skyline HTP Program',
+      url: 'https://www.skylinecollege.edu/htp/',
+      note: 'Honors Transfer Program — key to TAP certification'
+    }, {
+      label: 'Skyline Transfer Center',
+      url: 'https://www.skylinecollege.edu/transfercenter/',
+      note: 'Transfer counseling, workshops, college fairs'
+    }, {
+      label: 'Skyline Counseling',
+      url: 'https://www.skylinecollege.edu/counseling/',
+      note: 'Book transfer counseling appointments here'
+    }]
+  }, {
+    title: 'Target School Portals',
+    links: SCHOOLS.map(s => ({
+      label: s.name + ' — ' + s.program,
+      url: s.website,
+      note: s.deadlineLabel
+    }))
+  }, {
+    title: 'Communities & Forums',
+    links: [{
+      label: 'r/TransferStudents (Reddit)',
+      url: 'https://reddit.com/r/TransferStudents',
+      note: 'Transfer advice, decision threads, tips'
+    }, {
+      label: 'r/UCTransfers (Reddit)',
+      url: 'https://reddit.com/r/UCTransfers',
+      note: 'UC-specific transfer community'
+    }, {
+      label: 'Transfer Students Network',
+      url: 'https://www.facebook.com/groups/transferstudents/',
+      note: 'Facebook group for transfer students'
+    }]
+  }];
+  const [open, setOpen] = useState({
+    0: true,
+    1: true,
+    2: false,
+    3: false,
+    4: false,
+    5: false
+  });
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "Resources & Quick Links"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub mb-20"
+  }, "All the links you'll need \u2014 organized by category"), sections.map((sec, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "card",
+    style: {
+      marginBottom: 12
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-between",
+    style: {
+      cursor: 'pointer'
+    },
+    onClick: () => setOpen(o => ({
+      ...o,
+      [i]: !o[i]
+    }))
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 15
+    }
+  }, sec.title), /*#__PURE__*/React.createElement("span", {
+    style: {
+      color: 'var(--muted)',
+      fontSize: 13
+    }
+  }, open[i] ? '▲' : '▼')), open[i] && /*#__PURE__*/React.createElement("div", {
+    style: {
+      marginTop: 12
+    }
+  }, sec.links.map(link => /*#__PURE__*/React.createElement("a", {
+    key: link.url,
+    href: link.url,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "res-link"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 16
+    }
+  }, "\u2192"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 600
+    }
+  }, link.label), link.note && /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, link.note))))))));
+}
+
+// ─────────────────────────────────────────────
+// ABOUT
+// ─────────────────────────────────────────────
+function AboutTab() {
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "section-title"
+  }, "About Valentino"), /*#__PURE__*/React.createElement("div", {
+    className: "section-sub mb-24"
+  }, "The story behind the transfer journey"), /*#__PURE__*/React.createElement("div", {
+    className: "grid-2"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "The Journey"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "Serra HS \u2192 Skyline College \u2192 Target University"), /*#__PURE__*/React.createElement("p", {
+    className: "about-p"
+  }, "I'm Valentino, a first-generation college student from the San Francisco Bay Area. After graduating from Serra High School, I enrolled at Skyline College to take the community college transfer pathway \u2014 one of the most powerful and underutilized routes to top universities in California."), /*#__PURE__*/React.createElement("p", {
+    className: "about-p"
+  }, "My goal is to study Business Administration at a top UC or USC, with a focus on entrepreneurship and technology. Silicon Valley is my home, and I want to build the skills and network to launch something meaningful here."), /*#__PURE__*/React.createElement("p", {
+    className: "about-p"
+  }, "Through the Honors Transfer Program (HTP), rigorous coursework, and hands-on projects on GitHub, I'm building the strongest possible application for Fall 2027 transfer.")), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Why Each School"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "Fit, program, and career goals"), [{
+    name: 'UC Berkeley Haas',
+    why: 'The most rigorous business program in the UC system. Close to home, incredible alumni network in tech and finance. Dream school.'
+  }, {
+    name: 'USC Marshall',
+    why: 'Private school entrepreneurship culture, strong LA tech scene ties, and one of the best transfer admit rates among top private schools.'
+  }, {
+    name: 'UCI & UCSB',
+    why: 'TAG availability provides a guaranteed floor. Both have strong business programs and solid California job placement.'
+  }, {
+    name: 'UCLA',
+    why: 'Economics + proximity to Silicon Valley. Strong network, beautiful campus, and one of the most competitive programs in the US.'
+  }, {
+    name: 'Cal Poly SLO',
+    why: '"Learn by Doing" — hands-on, project-based business education. My portfolio and technical background fits well here.'
+  }, {
+    name: 'SJSU',
+    why: 'Home campus — strong Silicon Valley industry connections, co-op programs, and solid safety school with outstanding outcomes.'
+  }].map(s => /*#__PURE__*/React.createElement("div", {
+    key: s.name,
+    className: "htp-item"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700,
+      fontSize: 13
+    }
+  }, s.name), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: 'var(--muted)',
+      lineHeight: 1.6
+    }
+  }, s.why)))))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Links & Profiles"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "Find my work online"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/tinoxo",
+    target: "_blank",
+    rel: "noreferrer",
+    className: "res-link"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      fontSize: 20
+    }
+  }, "\u2328\uFE0F"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontWeight: 700
+    }
+  }, "GitHub: github.com/tinoxo"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 12,
+      color: 'var(--muted)'
+    }
+  }, "Projects, code, and open source work"))))), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Academic Profile"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "High school & incoming credentials"), /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: 16
+    }
+  }, [['High School', 'Serra High School'], ['Community College', 'Skyline College'], ['Target Transfer Year', 'Fall 2027'], ['Intended Major', 'Business Administration'], ['AP Exams Taken', '5 (20 units)'], ['AP Subjects', 'Stats, Chem, US History, Gov, Physics 1'], ['HTP Track', 'Enrolled'], ['TAP Status', 'In Progress']].map(([k, v]) => /*#__PURE__*/React.createElement("div", {
+    key: k,
+    style: {
+      padding: '10px 0',
+      borderBottom: '1px solid var(--light)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 11,
+      fontWeight: 700,
+      color: 'var(--muted)',
+      textTransform: 'uppercase',
+      letterSpacing: .5,
+      marginBottom: 2
+    }
+  }, k), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 14,
+      fontWeight: 500
+    }
+  }, v))))), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Transfer Mission Statement"), /*#__PURE__*/React.createElement("p", {
+    className: "about-p",
+    style: {
+      fontFamily: 'Georgia,serif',
+      fontSize: 16,
+      fontStyle: 'italic',
+      color: 'var(--blue)'
+    }
+  }, "\"The CC-to-UC transfer pathway isn't a backup plan \u2014 it's a strategic choice. I'm using every resource available: HTP honors contracts, articulation agreements, a growing technical portfolio, and relentless consistency in the classroom. Fall 2027, I'll be walking into a top program ready to build something great.\""), /*#__PURE__*/React.createElement("div", {
+    style: {
+      fontSize: 13,
+      color: 'var(--muted)'
+    }
+  }, "\u2014 Valentino, Skyline College Class of 2027")), /*#__PURE__*/React.createElement("div", {
+    className: "card"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "card-title"
+  }, "Resume Highlights"), /*#__PURE__*/React.createElement("div", {
+    className: "card-sub"
+  }, "Key achievements and activities"), /*#__PURE__*/React.createElement("ul", {
+    style: {
+      fontSize: 13,
+      lineHeight: 2,
+      paddingLeft: 20,
+      color: 'var(--text)'
+    }
+  }, /*#__PURE__*/React.createElement("li", null, "5 AP exams \u2014 4 scored 5, Physics 1 scored 3 (20 transferable units)"), /*#__PURE__*/React.createElement("li", null, "Honors Transfer Program participant at Skyline College"), /*#__PURE__*/React.createElement("li", null, "Self-taught programmer: Python, JavaScript, React"), /*#__PURE__*/React.createElement("li", null, "Game development project (Python/Pygame) \u2014 see Portfolio tab"), /*#__PURE__*/React.createElement("li", null, "Community service: tracking toward 16+ hours for HTP"), /*#__PURE__*/React.createElement("li", null, "GitHub profile: ", /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/tinoxo",
+    target: "_blank",
+    rel: "noreferrer",
+    style: {
+      color: 'var(--blue)'
+    }
+  }, "github.com/tinoxo")), /*#__PURE__*/React.createElement("li", null, "Target: 3.7+ CC GPA, strong IGETC certification"))))));
+}
+
+// ─────────────────────────────────────────────
+// APP
+// ─────────────────────────────────────────────
+const TABS = [{
+  id: 'dashboard',
+  label: 'Dashboard',
+  icon: '🏠'
+}, {
+  id: 'courses',
+  label: 'Courses',
+  icon: '📚'
+}, {
+  id: 'checklist',
+  label: 'Checklist',
+  icon: '✅'
+}, {
+  id: 'schools',
+  label: 'Schools',
+  icon: '🎓'
+}, {
+  id: 'portfolio',
+  label: 'Portfolio',
+  icon: '💼'
+}, {
+  id: 'ap',
+  label: 'AP Credits',
+  icon: '📋'
+}, {
+  id: 'igetc',
+  label: 'IGETC',
+  icon: '📊'
+}, {
+  id: 'htp',
+  label: 'HTP',
+  icon: '🏆'
+}, {
+  id: 'resources',
+  label: 'Resources',
+  icon: '🔗'
+}, {
+  id: 'about',
+  label: 'About',
+  icon: '👤'
+}];
+function App() {
+  const [tab, setTab] = useState('dashboard');
+  const [dark, setDark] = useState(() => localStorage.getItem('v-dark') === '1');
+  const [grades, setGrades] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('v-grades') || '{}');
+    } catch {
+      return {};
+    }
+  });
+  const [checked, setChecked] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('v-checked') || '{}');
+    } catch {
+      return {};
+    }
+  });
+  useEffect(() => {
+    localStorage.setItem('v-grades', JSON.stringify(grades));
+  }, [grades]);
+  useEffect(() => {
+    localStorage.setItem('v-checked', JSON.stringify(checked));
+  }, [checked]);
+  useEffect(() => {
+    document.body.classList.toggle('dark', dark);
+    localStorage.setItem('v-dark', dark ? '1' : '0');
+  }, [dark]);
+  return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("nav", {
+    className: "nav"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nav-inner"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nav-brand"
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83C\uDFAF"), " Transfer '27"), TABS.map(t => /*#__PURE__*/React.createElement("button", {
+    key: t.id,
+    className: `nav-tab${tab === t.id ? ' active' : ''}`,
+    onClick: () => setTab(t.id)
+  }, /*#__PURE__*/React.createElement("span", null, t.icon), " ", t.label)), /*#__PURE__*/React.createElement("button", {
+    className: "nav-tab",
+    style: {
+      marginLeft: 'auto'
+    },
+    onClick: () => setDark(d => !d),
+    title: "Toggle dark mode"
+  }, dark ? '☀️' : '🌙'))), /*#__PURE__*/React.createElement("div", {
+    className: "content"
+  }, tab === 'dashboard' && /*#__PURE__*/React.createElement(Dashboard, {
+    grades: grades,
+    checked: checked
+  }), tab === 'courses' && /*#__PURE__*/React.createElement(CourseTracker, {
+    grades: grades,
+    setGrades: setGrades
+  }), tab === 'checklist' && /*#__PURE__*/React.createElement(ChecklistTab, {
+    checked: checked,
+    setChecked: setChecked
+  }), tab === 'schools' && /*#__PURE__*/React.createElement(SchoolsTab, null), tab === 'portfolio' && /*#__PURE__*/React.createElement(PortfolioTab, null), tab === 'ap' && /*#__PURE__*/React.createElement(APCreditTab, null), tab === 'igetc' && /*#__PURE__*/React.createElement(IGETCTab, null), tab === 'htp' && /*#__PURE__*/React.createElement(HTPTab, null), tab === 'resources' && /*#__PURE__*/React.createElement(ResourcesTab, null), tab === 'about' && /*#__PURE__*/React.createElement(AboutTab, null)));
+}
+ReactDOM.createRoot(document.getElementById('root')).render(/*#__PURE__*/React.createElement(App, null));
+</script>
+
+</body>
+</html>
