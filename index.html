@@ -773,275 +773,288 @@ const IGETC_AREAS = [{
   status: 'verify',
   color: 'var(--yellow)'
 }];
-const CHECKLIST_PHASES = [{
-  id: 'now',
-  label: 'Phase 1 — Right Now',
-  color: '#C0392B',
-  emoji: '🚨'
-}, {
-  id: 'summer',
-  label: 'Phase 2 — Summer 2026',
-  color: '#D35400',
-  emoji: '☀️'
-}, {
-  id: 'fall',
-  label: 'Phase 3 — Fall 2026',
-  color: '#1A5276',
-  emoji: '🍂'
-}, {
-  id: 'winter',
-  label: 'Phase 4 — Winter 2026/27',
-  color: '#0E6655',
-  emoji: '❄️'
-}, {
-  id: 'spring',
-  label: 'Phase 5 — Spring 2027',
-  color: '#4A235A',
-  emoji: '🌸'
-}];
+const CHECKLIST_PHASES = [
+  { id: "now",    label: "Right Now",      sublabel: "Before Summer Starts",  color: "#C0392B", accent: "#E74C3C", bg: "#FDF2F2", emoji: "🚨" },
+  { id: "summer", label: "Summer 2026",    sublabel: "June to August",        color: "#D35400", accent: "#E67E22", bg: "#FDF6EE", emoji: "☀️" },
+  { id: "fall",   label: "Fall 2026",      sublabel: "Application Semester",  color: "#1A5276", accent: "#2980B9", bg: "#EBF5FB", emoji: "🍂" },
+  { id: "winter", label: "Winter 2026/27", sublabel: "January to March",      color: "#0E6655", accent: "#1ABC9C", bg: "#E8F8F5", emoji: "❄️" },
+  { id: "spring", label: "Spring 2027",    sublabel: "Home Stretch",          color: "#4A235A", accent: "#8E44AD", bg: "#F5EEF8", emoji: "🌸" },
+];
 const CHECKLIST_ITEMS = [
-// Phase 1 — Now
-{
-  id: 'htp-enroll',
-  phase: 'now',
-  urgent: true,
-  task: 'Enroll in HTP (Honors Transfer Program) at Skyline',
-  deadline: 'June 2026',
-  detail: 'Contact the HTP coordinator at Skyline College. Enroll in IDST 105 for Fall 2026. HTP gives you TAP certification for UC priority admission.',
-  link: 'https://www.skylinecollege.edu/htp/'
-}, {
-  id: 'counselor',
-  phase: 'now',
-  urgent: true,
-  task: 'Schedule official Transfer Counseling appointment',
-  deadline: 'June 2026',
-  detail: 'Book a 1-hour transfer counseling session at Skyline. Bring your AP score reports and high school transcript. Ask for a Student Education Plan (SEP).',
-  link: 'https://www.skylinecollege.edu/counseling/'
-}, {
-  id: 'summer-reg',
-  phase: 'now',
-  urgent: true,
-  task: 'Register for Summer 2026 courses (Calc I + Micro)',
-  deadline: 'May 2026',
-  detail: 'Register as soon as priority registration opens. Calc I is high-demand. Consider waitlisting if needed.',
-  link: ''
-}, {
-  id: 'ap-scores',
-  phase: 'now',
-  urgent: false,
-  task: 'Request official AP score reports sent to Skyline',
-  deadline: 'June 2026',
-  detail: 'Log in to College Board and send official AP scores to Skyline College to get credit awarded on your transcript. Cost: ~$15/school.',
-  link: 'https://apcentral.collegeboard.org/'
-}, {
-  id: 'assist',
-  phase: 'now',
-  urgent: false,
-  task: 'Research course articulations on ASSIST.org',
-  deadline: 'Ongoing',
-  detail: 'For each planned course, verify articulation with all 8 target schools on ASSIST.org. Screenshot/save the articulation agreements.',
-  link: 'https://assist.org'
-}, {
-  id: 'uc-account',
-  phase: 'now',
-  urgent: false,
-  task: 'Create UC Application account at apply.universityofcalifornia.edu',
-  deadline: 'August 2026',
-  detail: 'Account opens August 1. Set up early, enter basic info, and prepare essays before the November window.',
-  link: 'https://apply.universityofcalifornia.edu'
-},
-// Phase 2 — Summer 2026
-{
-  id: 'calc1-A',
-  phase: 'summer',
-  urgent: true,
-  task: 'Complete Calculus I with A/A-',
-  deadline: 'August 2026',
-  detail: 'Target A. Attend every class, do all problem sets, form study groups. Calc I is foundational for the full STEM prereq chain.',
-  link: ''
-}, {
-  id: 'micro-A',
-  phase: 'summer',
-  urgent: true,
-  task: 'Complete Microeconomics with A',
-  deadline: 'August 2026',
-  detail: 'Read textbook chapters before lecture. Economics prereq for most business programs. An A here demonstrates academic readiness.',
-  link: ''
-}, {
-  id: 'tag-research',
-  phase: 'summer',
-  urgent: false,
-  task: 'Research TAG eligibility for UCSB and UCI',
-  deadline: 'August 2026',
-  detail: 'TAG (Transfer Admission Guarantee) is available at UCI and UCSB. Review specific unit and GPA requirements. TAG window opens Sept 1.',
-  link: 'https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/transfer-admission-guarantee-tag.html'
-}, {
-  id: 'ps-draft1',
-  phase: 'summer',
-  urgent: false,
-  task: 'Draft Personal Insight Questions (UC PIQs) — first pass',
-  deadline: 'September 2026',
-  detail: 'There are 8 prompts; you choose 4. Common strong choices: #1 (leadership), #5 (challenge), #6 (subject interest), #8 (community). Start early and get feedback.',
-  link: 'https://admission.universityofcalifornia.edu/how-to-apply/applying-as-a-transfer/personal-insight-questions.html'
-}, {
-  id: 'lor-request',
-  phase: 'summer',
-  urgent: false,
-  task: 'Identify and approach professors for letters of recommendation',
-  deadline: 'September 2026',
-  detail: 'Ask 2–3 professors who know you well. Give them your resume, personal statement draft, and a list of schools. Ask early — professors get busy in fall.',
-  link: ''
-},
-// Phase 3 — Fall 2026
-{
-  id: 'tag-submit',
-  phase: 'fall',
-  urgent: true,
-  task: 'Submit TAG application (UCI / UCSB) — Sept 1–30 window',
-  deadline: 'September 30, 2026',
-  detail: 'TAG window is Sept 1–30. Submit ONLY if you meet GPA minimums. Review course completions carefully before submitting.',
-  link: 'https://admission.universityofcalifornia.edu/admission-requirements/transfer-requirements/transfer-admission-guarantee-tag.html'
-}, {
-  id: 'idst105',
-  phase: 'fall',
-  urgent: true,
-  task: 'Complete IDST 105 (HTP Orientation)',
-  deadline: 'December 2026',
-  detail: 'Required for HTP enrollment. Covers transfer process, study skills, and community engagement. Pass with B or higher.',
-  link: ''
-}, {
-  id: 'uc-app-open',
-  phase: 'fall',
-  urgent: true,
-  task: 'UC Application opens Aug 1 — complete all sections',
-  deadline: 'November 30, 2026',
-  detail: 'Fill in all coursework, test scores, honors, activities, and awards. Complete all 4 PIQs (350 words each). Review 3x before submitting.',
-  link: 'https://apply.universityofcalifornia.edu'
-}, {
-  id: 'csu-app',
-  phase: 'fall',
-  urgent: true,
-  task: 'Submit CSU application (Cal Poly SLO, SJSU)',
-  deadline: 'November 30, 2026',
-  detail: 'CSU application opens Oct 1, due Nov 30. Apply to Cal Poly SLO and SJSU. Include all coursework and AP scores.',
-  link: 'https://www2.calstate.edu/apply'
-}, {
-  id: 'igetc-cert',
-  phase: 'fall',
-  urgent: false,
-  task: 'Request IGETC certification plan from counselor',
-  deadline: 'October 2026',
-  detail: 'Meet with counselor to review IGETC progress. Identify missing areas (likely 3A and 5B). Plan courses to complete IGETC before transfer.',
-  link: ''
-}, {
-  id: 'uc-submit',
-  phase: 'fall',
-  urgent: true,
-  task: 'Submit UC Application — Nov 1–30 window',
-  deadline: 'November 30, 2026',
-  detail: 'HARD DEADLINE. No late submissions. Submit all UC applications during this window. Apply to: Berkeley, UCI, UCLA, UCSD, UCSB.',
-  link: 'https://apply.universityofcalifornia.edu'
-}, {
-  id: 'usc-app',
-  phase: 'fall',
-  urgent: false,
-  task: 'Begin USC Marshall application (due Feb 1)',
-  deadline: 'February 1, 2027',
-  detail: 'USC has its own application portal. Two essays required. Research Marshall program thoroughly for "Why USC" essay.',
-  link: 'https://marshall.usc.edu/programs/undergraduate/transfer/'
-},
-// Phase 4 — Winter 2026/27
-{
-  id: 'fafsa',
-  phase: 'winter',
-  urgent: true,
-  task: 'Submit FAFSA (opens Dec 1, priority Jan 1)',
-  deadline: 'January 1, 2027',
-  detail: 'FAFSA opens Dec 1. Submit ASAP after Jan 1 for maximum financial aid consideration. Use Federal Student Aid website.',
-  link: 'https://studentaid.gov/h/apply-for-aid/fafsa'
-}, {
-  id: 'usc-submit',
-  phase: 'winter',
-  urgent: true,
-  task: 'Submit USC Marshall application',
-  deadline: 'February 1, 2027',
-  detail: 'Final deadline Feb 1. Polish your essays. Get at least 2 peer reviews. Proofread everything one final time.',
-  link: 'https://marshall.usc.edu'
-}, {
-  id: 'honors-contracts',
-  phase: 'winter',
-  urgent: false,
-  task: 'Complete at least 2 of 4 required Honors Contracts',
-  deadline: 'December 2026',
-  detail: 'HTP requires 4 honors contracts. Talk to professors about adding an honors contract to any course. Each requires additional work/project.',
-  link: ''
-}, {
-  id: 'service-hours',
-  phase: 'winter',
-  urgent: false,
-  task: 'Log 8+ community service hours (16 total needed for HTP)',
-  deadline: 'May 2027',
-  detail: 'HTP requires 16 hours of community service. Document each event. Options: tutoring, food bank, campus events, community organizations.',
-  link: ''
-}, {
-  id: 'maintain-gpa',
-  phase: 'winter',
-  urgent: false,
-  task: 'Maintain 3.5+ cumulative GPA through winter courses',
-  deadline: 'January 2027',
-  detail: 'GPA calculation includes all CC coursework. Stats and Business Law must be strong. Stay consistent — admissions see mid-year transcripts.',
-  link: ''
-},
-// Phase 5 — Spring 2027
-{
-  id: 'decisions',
-  phase: 'spring',
-  urgent: false,
-  task: 'Await admissions decisions (UC: March, CSU: March–April)',
-  deadline: 'March–April 2027',
-  detail: 'UC decisions typically release late March. CSU decisions February–April. USC private school typically March–April. Check portals regularly.',
-  link: ''
-}, {
-  id: 'fin-aid',
-  phase: 'spring',
-  urgent: true,
-  task: 'Compare financial aid award letters from all admitted schools',
-  deadline: 'April 2027',
-  detail: 'Compare total cost of attendance, grants vs loans, work-study. Use net price calculators. Contact financial aid offices with questions.',
-  link: ''
-}, {
-  id: 'tap-cert',
-  phase: 'spring',
-  urgent: false,
-  task: 'Obtain TAP/HTP certification from Skyline',
-  deadline: 'April 2027',
-  detail: 'Request TAP certification letter from HTP coordinator once all requirements are met. Submit to UC schools as part of final confirmation.',
-  link: ''
-}, {
-  id: 'sir',
-  phase: 'spring',
-  urgent: true,
-  task: 'Submit SIR (Statement of Intent to Register) by May 1',
-  deadline: 'May 1, 2027',
-  detail: 'HARD DEADLINE. You must submit SIR to one school by May 1. Also decline all other offers promptly as a courtesy to waitlisted students.',
-  link: ''
-}, {
-  id: 'transcript',
-  phase: 'spring',
-  urgent: false,
-  task: 'Request final official transcript sent to chosen university',
-  deadline: 'July 2027',
-  detail: 'After spring grades are posted, request official transcript from Skyline to be sent directly to your university. Final GPA must meet admission conditions.',
-  link: ''
-}, {
-  id: 'housing',
-  phase: 'spring',
-  urgent: true,
-  task: 'Apply for on-campus housing at chosen university',
-  deadline: 'May 2027',
-  detail: 'Apply immediately after submitting SIR. Housing opens fill quickly. Look for transfer-specific housing options.',
-  link: ''
-}];
+  // ─── PHASE 1: RIGHT NOW ───
+  {
+    id: 'htp-enroll', phase: 'now', urgent: true,
+    task: 'Visit Skyline HTP office and formally enroll in the Honors Transfer Program',
+    detail: 'Do this the first week of summer. Ask specifically: (1) Are honors contracts available for Calc I, Micro, Macro, and Financial Accounting? (2) Does post-graduation summer enrollment make you fully eligible for TAP?',
+    deadline: 'June 1, 2026',
+    links: [{ label: 'Skyline HTP', url: 'https://www.skylinecollege.edu/honorstransfer' }]
+  },
+  {
+    id: 'community-service', phase: 'now', urgent: true,
+    task: 'Start your 16 hours of community service for HTP',
+    detail: 'Easy to forget, annoying to scramble for later. Start now so it's done before fall. Log hours with the HTP office — they need documentation.',
+    deadline: 'October 2026',
+    links: []
+  },
+  {
+    id: 'counselor-meeting', phase: 'now', urgent: true,
+    task: 'Schedule a meeting with your Skyline transfer counselor',
+    detail: 'Bring your course plan PDF. Get their sign-off on the full schedule including the Summer 15-unit load and Spring 18-unit plan. Confirm De Anza/Foothill winter enrollment is allowed without Skyline permission.',
+    deadline: 'June 1, 2026',
+    links: []
+  },
+  {
+    id: 'uctap-account', phase: 'now', urgent: false,
+    task: 'Create your UC TAP account at uctap.universityofcalifornia.edu',
+    detail: 'This is the UC transfer planning tool, separate from UCLA TAP. It tracks your IGETC and TAG progress and serves as your TAG application for UCSB.',
+    deadline: 'June 2026',
+    links: [{ label: 'UC TAP Portal', url: 'https://uctap.universityofcalifornia.edu' }]
+  },
+  {
+    id: 'assist-check', phase: 'now', urgent: true,
+    task: 'Verify CIS 250 (C++) and CIS 252 (Data Structures) articulation for UCI BIM on ASSIST.org',
+    detail: 'Confirm both courses satisfy the ICS programming sequence for UCI BIM. This is the one major unknown in the entire plan. Also verify these count toward CS minor prerequisites at other schools.',
+    deadline: 'June 1, 2026',
+    links: [{ label: 'ASSIST.org', url: 'https://assist.org' }]
+  },
+  {
+    id: 'send-emails', phase: 'now', urgent: false,
+    task: 'Send inquiry emails to all target schools with your transfer plan attached',
+    detail: 'Contact: Berkeley Haas, UCLA, UCI Merage (BIM specifically), UCSD Rady, UCSB, USC Marshall (territory counselor: Lucy Jordan — lucyjord@usc.edu, (213) 764-4558), Cal Poly SLO, SJSU. Ask about minor declaration process for CS/Data Science minors as a transfer student.',
+    deadline: 'June 2026',
+    links: [
+      { label: 'Email Lucy Jordan (USC)', url: 'mailto:lucyjord@usc.edu' },
+      { label: 'USC Marshall Admissions', url: 'mailto:busadm@marshall.usc.edu' }
+    ]
+  },
+  {
+    id: 'minor-research', phase: 'now', urgent: false,
+    task: 'Research CS/Data Science minor prerequisites at each target school',
+    detail: 'Your C++, Data Structures, and Linear Algebra courses already satisfy most lower-div prereqs. Confirm specifically: USC Viterbi CS minor prereqs, Berkeley DS minor enrollment process, UCLA CS minor GPA requirements (it's impacted), UCSD Cognitive Science minor requirements. Minors are declared after arrival — this is just planning.',
+    deadline: 'July 2026',
+    links: []
+  },
+
+  // ─── PHASE 2: SUMMER 2026 ───
+  {
+    id: 'summer-courses', phase: 'summer', urgent: false,
+    task: 'Complete Calc I, Micro, Macro, and Financial Accounting at Skyline',
+    detail: 'These four courses are the foundation everything else is built on. GPA here matters for HTP certification (need 3.25+). Target 4.0 this semester — summer classes are intense but shorter.',
+    deadline: 'August 2026',
+    links: []
+  },
+  {
+    id: 'honors-contracts', phase: 'summer', urgent: false,
+    task: 'Complete honors contracts for at least 2 summer courses if available',
+    detail: 'Calc I and Micro are strong candidates. This gets you halfway to HTP certification (need 4 contracts total) without adding any extra classes.',
+    deadline: 'August 2026',
+    links: []
+  },
+  {
+    id: 'deanza-apply', phase: 'summer', urgent: false,
+    task: 'Apply to De Anza or Foothill College for Winter 2027 enrollment',
+    detail: 'Apply via CCCApply. Free to apply, $46/unit. Do this in summer so you're not scrambling in November. You need: English Comp II equivalent (IGETC 1B) and Film 100 equivalent (IGETC 3A). Both fully online.',
+    deadline: 'October 2026',
+    links: [
+      { label: 'De Anza', url: 'https://www.deanza.edu' },
+      { label: 'Foothill', url: 'https://www.foothill.edu' }
+    ]
+  },
+  {
+    id: 'ap-scores', phase: 'summer', urgent: false,
+    task: 'Receive AP scores and confirm credit awards at each target school',
+    detail: 'You're assuming score 5 on Stats, Chem, APUSH, AP Gov. AP Physics 1 is a score 3 — confirm credit at each school since some UCs may not award IGETC 5A for a 3. Request official AP score reports sent to Skyline College to post the credits.',
+    deadline: 'July 2026',
+    links: []
+  },
+  {
+    id: 'professor-usc', phase: 'summer', urgent: false,
+    task: 'Start building professor relationships for USC recommendation letters',
+    detail: 'USC Marshall requires 2 professor rec letters — unlike UC schools. Summer classes are smaller so access is easier. Introduce yourself, participate actively, visit office hours. Ask in Fall once you have a real relationship.',
+    deadline: 'August 2026',
+    links: [{ label: 'USC Marshall Admissions', url: 'mailto:busadm@marshall.usc.edu' }]
+  },
+  {
+    id: 'github-portfolio', phase: 'summer', urgent: false,
+    task: 'Keep GitHub (tinoxo) active and document your projects publicly',
+    detail: 'Admissions officers and scholarship reviewers increasingly check GitHub. Make sure your repos are public, have good READMEs, and show consistent commit history. Strong signal for Berkeley and USC especially.',
+    deadline: 'Ongoing',
+    links: [{ label: 'GitHub (tinoxo)', url: 'https://github.com/tinoxo' }]
+  },
+
+  // ─── PHASE 3: FALL 2026 (APPLICATION SEMESTER) ───
+  {
+    id: 'fall-courses', phase: 'fall', urgent: false,
+    task: 'Complete Calc II, English Comp I, C++, Managerial Accounting, and Business Law',
+    detail: '18 units — your heaviest and most important semester. These 5 courses plus Summer work are what admissions sees in November. Target 3.9+ GPA. C++ is also your gateway to CS minor prerequisites at most target schools.',
+    deadline: 'December 2026',
+    links: []
+  },
+  {
+    id: 'htp-fall', phase: 'fall', urgent: false,
+    task: 'Complete one more honors contract in Fall for HTP certification',
+    detail: 'You need 4 honors courses total. If you got 2 in summer, one in fall and one in spring gets you certified. Calc II or C++ are strong candidates.',
+    deadline: 'December 2026',
+    links: []
+  },
+  {
+    id: 'tag-submit', phase: 'fall', urgent: true,
+    task: 'Submit UCSB TAG application in September/October',
+    detail: 'TAG window is September 1 to October 31. Submit through your UC TAP account. Confirms guaranteed admission to UCSB Business Economics if you meet: 60 units, 3.2+ GPA, IGETC complete. This is your guaranteed safety net.',
+    deadline: 'October 31, 2026',
+    links: [{ label: 'UC TAP Portal', url: 'https://uctap.universityofcalifornia.edu' }]
+  },
+  {
+    id: 'uc-application', phase: 'fall', urgent: true,
+    task: 'Submit UC application by November 30',
+    detail: 'Apply to Berkeley, UCLA, UCI (BIM — your primary realistic target), UCSD (Business Economics EN30), and UCSB. Mark UCLA TAP on your application. Note intended CS/Data Science minor interest in additional comments where applicable.',
+    deadline: 'November 30, 2026',
+    links: [{ label: 'UC Application', url: 'https://apply.universityofcalifornia.edu' }]
+  },
+  {
+    id: 'usc-application', phase: 'fall', urgent: true,
+    task: 'Submit USC Marshall application (deadline: February 1, 2027)',
+    detail: 'USC is on a different cycle from UCs. Territory counselor: Lucy Jordan (lucyjord@usc.edu, (213) 764-4558). Have two professor rec letters ready — submit close to the application date. Note Viterbi CS minor interest in your essays.',
+    deadline: 'February 1, 2027',
+    links: [
+      { label: 'Email Lucy Jordan', url: 'mailto:lucyjord@usc.edu' },
+      { label: 'USC Admission', url: 'https://www.usc.edu/admission' }
+    ]
+  },
+  {
+    id: 'csu-application', phase: 'fall', urgent: true,
+    task: 'Submit CSU application for Cal Poly SLO and SJSU',
+    detail: 'CSU application window is October 1 to December 15. Cal Poly SLO is impacted — apply early. Note intended CS minor on both applications.',
+    deadline: 'December 15, 2026',
+    links: [{ label: 'CSU Apply', url: 'https://www.calstate.edu/apply' }]
+  },
+  {
+    id: 'tap-certified', phase: 'fall', urgent: true,
+    task: 'Get TAP certified by Skyline HTP counselor before UC application deadline',
+    detail: 'Meet with your HTP counselor in October to confirm you're on track. They submit certification to UCLA on your behalf — you don't apply to TAP directly. TAP priority review at UCLA requires HTP certification + eligible major.',
+    deadline: 'October 2026',
+    links: [{ label: 'Skyline HTP', url: 'https://www.skylinecollege.edu/honorstransfer' }]
+  },
+  {
+    id: 'uc-piqs', phase: 'fall', urgent: false,
+    task: 'Write UC Personal Insight Questions (PIQs)',
+    detail: '8 prompts, answer 4. Start drafting in September. Your strongest angles: (1) one-year accelerated CC path, (2) game development and technical projects on GitHub, (3) AI + business vision for Silicon Valley, (4) working at Lunardi's and writing for Serra Friar while managing 15–18 unit semesters.',
+    deadline: 'November 30, 2026',
+    links: []
+  },
+  {
+    id: 'usc-essays', phase: 'fall', urgent: false,
+    task: 'Write USC Marshall supplemental essays',
+    detail: 'USC has its own essays separate from UC PIQs. Speak to: why Marshall, why the Viterbi CS minor combo, your Silicon Valley AI + business vision, and your technical projects. Make the AI angle explicit and personal.',
+    deadline: 'February 1, 2027',
+    links: []
+  },
+  {
+    id: 'winter-register', phase: 'fall', urgent: false,
+    task: 'Register for Winter 2027 courses at De Anza or Foothill',
+    detail: 'Enroll in English Comp II equivalent (IGETC 1B) and Film 100 equivalent (IGETC 3A). Both fully online. Registration typically opens October–November for winter quarter.',
+    deadline: 'November 2026',
+    links: [
+      { label: 'De Anza', url: 'https://www.deanza.edu' },
+      { label: 'Foothill', url: 'https://www.foothill.edu' }
+    ]
+  },
+  {
+    id: 'minor-declare-plan', phase: 'fall', urgent: false,
+    task: 'Finalize your minor plan for each school you're applying to',
+    detail: 'Before submitting applications, know your intended minor at each school: UCI (BIM — no minor needed, tech-integrated), USC (Viterbi CS minor), Berkeley (Data Science minor), UCLA (Statistics minor — CS minor is impacted), UCSD (Cognitive Science minor), UCSB (Technology Management minor), Cal Poly/SJSU (CS minor).',
+    deadline: 'November 2026',
+    links: []
+  },
+
+  // ─── PHASE 4: WINTER 2026/27 ───
+  {
+    id: 'winter-courses', phase: 'winter', urgent: false,
+    task: 'Complete English Comp II equivalent and Film 100 at De Anza or Foothill',
+    detail: 'Both fully online. Light workload — use this time to focus on USC application and essays. English Comp II completes IGETC Area 1B. Film 100 completes IGETC Area 3A. Both are critical for IGETC certification.',
+    deadline: 'March 2027',
+    links: []
+  },
+  {
+    id: 'tau-submit', phase: 'winter', urgent: true,
+    task: 'Submit UC Transfer Academic Update (TAU) by January 31',
+    detail: 'Required for ALL UC applicants. Report your Fall 2026 grades and any changes to your planned Spring coursework. Missing this deadline can seriously affect your application. Log in to your UC application account to submit.',
+    deadline: 'January 31, 2027',
+    links: [{ label: 'UC Application Portal', url: 'https://apply.universityofcalifornia.edu' }]
+  },
+  {
+    id: 'usc-recs', phase: 'winter', urgent: true,
+    task: 'Confirm USC recommendation letters are submitted',
+    detail: 'Two professor letters required for USC Marshall. Letters should be submitted close to the February 1 deadline. Follow up with professors in January to confirm. Lucy Jordan is your territory counselor if issues arise: lucyjord@usc.edu, (213) 764-4558.',
+    deadline: 'February 1, 2027',
+    links: [{ label: 'Email Lucy Jordan', url: 'mailto:lucyjord@usc.edu' }]
+  },
+  {
+    id: 'interviews', phase: 'winter', urgent: false,
+    task: 'Prepare for USC Marshall admissions interview if offered',
+    detail: 'USC Marshall sometimes interviews transfer applicants. If invited, treat it as a major opportunity. Prep: your story, why Marshall, why the Viterbi CS minor combo, your Silicon Valley vision, your technical projects and GitHub.',
+    deadline: 'February–March 2027',
+    links: []
+  },
+  {
+    id: 'financial-aid', phase: 'winter', urgent: true,
+    task: 'Submit FAFSA as early as possible',
+    detail: 'FAFSA opens in December. Filing early maximizes financial aid options at every school. Required for the UCLA TAP Scholarship if admitted. Required for most institutional aid at USC and all UCs.',
+    deadline: 'December 2026 — file immediately when it opens',
+    links: [{ label: 'FAFSA', url: 'https://studentaid.gov/h/apply-for-aid/fafsa' }]
+  },
+
+  // ─── PHASE 5: SPRING 2027 ───
+  {
+    id: 'spring-courses', phase: 'spring', urgent: false,
+    task: 'Complete Linear Algebra, Data Structures (C++), Oral Comm, Bio 101, Ethics, and Music Appreciation',
+    detail: '18 units across 6 courses — counselor approval needed for this load. Linear Algebra and Data Structures are the heavy lifts. The four GEs complete your IGETC. These courses also satisfy lower-div prerequisites for CS/Data Science minors at every target school.',
+    deadline: 'May 2027',
+    links: []
+  },
+  {
+    id: 'decisions', phase: 'spring', urgent: false,
+    task: 'Review admission decisions and compare financial aid offers',
+    detail: 'UC decisions come out mid-March. CSU decisions vary. USC typically notifies in April. Compare: program fit, CS/tech minor accessibility and GPA requirements, financial aid package, location, alumni network density in Silicon Valley. You have until May 1 to commit.',
+    deadline: 'May 1, 2027',
+    links: []
+  },
+  {
+    id: 'minor-declare', phase: 'spring', urgent: false,
+    task: 'Research minor declaration process at your admitted schools',
+    detail: 'Once you have offers, contact each school's advising office about declaring your CS/Data Science/Technology minor as an incoming transfer. Most schools allow declaration in your first semester. Your prereqs (C++, Data Structures, Linear Algebra) will likely satisfy most lower-division minor requirements.',
+    deadline: 'April–May 2027',
+    links: []
+  },
+  {
+    id: 'tap-scholarship', phase: 'spring', urgent: false,
+    task: 'Apply for UCLA TAP Scholarship if admitted to UCLA',
+    detail: 'If admitted to UCLA via TAP, you may be eligible for the TAP Scholarship. Requires FAFSA on file. Contact UCLA financial aid office immediately after admission notification.',
+    deadline: 'April 2027',
+    links: [{ label: 'UCLA TAP Info', url: 'https://admission.ucla.edu/apply/transfer/ucla-tap' }]
+  },
+  {
+    id: 'commit', phase: 'spring', urgent: true,
+    task: 'Submit your Statement of Intent to Register (SIR) by May 1',
+    detail: 'You can only commit to one school. Withdraw from other schools promptly as a courtesy. Notify Skyline College of your transfer destination. Celebrate — you did it.',
+    deadline: 'May 1, 2027',
+    links: []
+  },
+  {
+    id: 'igetc-certified', phase: 'spring', urgent: true,
+    task: 'Request official IGETC certification from Skyline College',
+    detail: 'Request IGETC certification from Skyline's counseling office after Spring grades post. Send certified IGETC to your transfer school before their deadline. Without this, you may need to complete GE requirements at the university — much harder and more expensive.',
+    deadline: 'June 2027',
+    links: []
+  },
+  {
+    id: 'housing', phase: 'spring', urgent: false,
+    task: 'Apply for housing and register for transfer orientation',
+    detail: 'Apply for housing immediately after committing — it fills fast at every target school. Register for transfer orientation. Start connecting with transfer student communities online.',
+    deadline: 'May–June 2027',
+    links: []
+  }
+];
 const PROJECTS_DEFAULT = [{
   id: 'game1',
   name: '2D Platformer Game (Pygame)',
@@ -1870,12 +1883,15 @@ function ChecklistTab({
       style: {
         marginBottom: 8
       }
-    }, item.detail), item.link && /*#__PURE__*/React.createElement("a", {
-      href: item.link,
+    }, item.detail), item.links && item.links.length > 0 && /*#__PURE__*/React.createElement("div", {
+      style: { display: 'flex', gap: 8, flexWrap: 'wrap', marginTop: 8 }
+    }, item.links.map(l => /*#__PURE__*/React.createElement("a", {
+      key: l.url,
+      href: l.url,
       target: "_blank",
       rel: "noreferrer",
       className: "btn btn-outline btn-sm"
-    }, "Open Link \u2192"))))));
+    }, l.label, " \u2192"))))));
   }));
 }
 
